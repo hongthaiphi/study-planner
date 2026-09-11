@@ -225,15 +225,24 @@ alter table buildings enable row level security;
 alter table achievements enable row level security;
 alter table ai_reports enable row level security;
 
+-- Security definer function to get family IDs without triggering RLS recursion
+create or replace function get_my_family_ids()
+returns setof uuid
+language sql
+security definer
+set search_path = public
+as $$
+  select family_id from family_members where user_id = auth.uid();
+$$;
+
 -- Users can read their own data
 create policy "users_own" on users for all using (id = auth.uid());
 
 -- Family members can see each other
 create policy "family_read" on users for select using (
   id in (
-    select fm2.user_id from family_members fm1
-    join family_members fm2 on fm1.family_id = fm2.family_id
-    where fm1.user_id = auth.uid()
+    select fm.user_id from family_members fm
+    where fm.family_id in (select get_my_family_ids())
   )
 );
 
@@ -243,9 +252,10 @@ create policy "projects_own" on projects for all using (user_id = auth.uid());
 -- Projects: family can view children's projects
 create policy "projects_family_read" on projects for select using (
   user_id in (
-    select fm2.user_id from family_members fm1
-    join family_members fm2 on fm1.family_id = fm2.family_id
-    where fm1.user_id = auth.uid() and fm1.role_in_family = 'parent' and fm2.role_in_family = 'child'
+    select fm.user_id from family_members fm
+    where fm.family_id in (select get_my_family_ids())
+      and fm.role_in_family = 'child'
+      and exists (select 1 from family_members p where p.user_id = auth.uid() and p.family_id = fm.family_id and p.role_in_family = 'parent')
   )
 );
 
@@ -255,9 +265,9 @@ create policy "activity_own" on activity_logs for all using (user_id = auth.uid(
 -- Activity logs: parent can view child's logs
 create policy "activity_family_read" on activity_logs for select using (
   user_id in (
-    select fm2.user_id from family_members fm1
-    join family_members fm2 on fm1.family_id = fm2.family_id
-    where fm1.user_id = auth.uid() and fm1.role_in_family = 'parent' and fm2.role_in_family = 'child'
+    select fm.user_id from family_members fm
+    where fm.family_id in (select get_my_family_ids())
+      and fm.role_in_family = 'child'
   )
 );
 
@@ -267,9 +277,8 @@ create policy "game_own" on user_game_stats for all using (user_id = auth.uid())
 -- Game stats: family read
 create policy "game_family_read" on user_game_stats for select using (
   user_id in (
-    select fm2.user_id from family_members fm1
-    join family_members fm2 on fm1.family_id = fm2.family_id
-    where fm1.user_id = auth.uid()
+    select fm.user_id from family_members fm
+    where fm.family_id in (select get_my_family_ids())
   )
 );
 
@@ -284,9 +293,10 @@ create policy "topics_read" on topics for select using (
   project_id in (select id from projects where user_id = auth.uid())
   or project_id in (
     select p.id from projects p
-    join family_members fm1 on fm1.user_id = auth.uid() and fm1.role_in_family = 'parent'
-    join family_members fm2 on fm2.family_id = fm1.family_id and fm2.role_in_family = 'child'
-    where p.user_id = fm2.user_id
+    where p.user_id in (
+      select fm.user_id from family_members fm
+      where fm.family_id in (select get_my_family_ids()) and fm.role_in_family = 'child'
+    )
   )
 );
 
@@ -314,12 +324,12 @@ create policy "ai_reports_own" on ai_reports for all using (user_id = auth.uid()
 
 -- Families: members only
 create policy "families_member" on families for select using (
-  id in (select family_id from family_members where user_id = auth.uid())
+  id in (select get_my_family_ids())
 );
 
 -- Family members: members can see own family
 create policy "family_members_read" on family_members for select using (
-  family_id in (select family_id from family_members where user_id = auth.uid())
+  family_id in (select get_my_family_ids())
 );
 
 -- Goal templates: public read

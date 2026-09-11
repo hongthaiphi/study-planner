@@ -20,6 +20,16 @@ const activityTypes: { value: ActivityType; label: string }[] = [
   { value: "session", label: "Buổi học/luyện" },
 ];
 
+interface Rewards {
+  xp: number;
+  gold: number;
+  streakBonus: number;
+  newStreak: number;
+  newLevel: number;
+  leveledUp: boolean;
+  levelUpBonus: number;
+}
+
 export default function LogPage() {
   const supabase = createClient();
   const [projects, setProjects] = useState<Project[]>([]);
@@ -34,7 +44,7 @@ export default function LogPage() {
   const [notes, setNotes] = useState("");
   const [mood, setMood] = useState<Mood | "">("");
   const [saving, setSaving] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [rewards, setRewards] = useState<Rewards | null>(null);
 
   useEffect(() => {
     loadData();
@@ -83,32 +93,36 @@ export default function LogPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    setSuccess(false);
+    setRewards(null);
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-
-    const { error } = await supabase.from("activity_logs").insert({
-      user_id: user.id,
-      project_id: selectedProject,
-      topic_id: selectedTopic || null,
-      type: activityType,
-      duration_minutes: duration ? parseInt(duration) : null,
-      value: value ? parseFloat(value) : null,
-      max_value: maxValue ? parseFloat(maxValue) : null,
-      notes: notes || null,
-      mood: mood || null,
+    const res = await fetch("/api/log-activity", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        project_id: selectedProject,
+        topic_id: selectedTopic || null,
+        type: activityType,
+        duration_minutes: duration ? parseInt(duration) : null,
+        value: value ? parseFloat(value) : null,
+        max_value: maxValue ? parseFloat(maxValue) : null,
+        notes: notes || null,
+        mood: mood || null,
+      }),
     });
 
-    if (!error) {
-      setSuccess(true);
+    const data = await res.json();
+
+    if (res.ok) {
+      if (data.rewards) {
+        setRewards(data.rewards);
+        setTimeout(() => setRewards(null), 8000);
+      }
       setDuration("");
       setValue("");
       setMaxValue("");
       setNotes("");
       setMood("");
       loadData();
-      setTimeout(() => setSuccess(false), 3000);
     }
     setSaving(false);
   }
@@ -117,9 +131,42 @@ export default function LogPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">📝 Log hoạt động</h1>
+      <h1 className="text-2xl font-bold text-gray-900">Log hoạt động</h1>
 
-      {/* Form */}
+      {rewards && (
+        <div className="rounded-xl border-2 border-yellow-400 bg-gradient-to-r from-yellow-50 to-amber-50 p-4 shadow-lg animate-[fadeIn_0.3s_ease-out]">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-2xl">🎉</span>
+            <h3 className="text-lg font-bold text-amber-800">Phần thưởng!</h3>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center gap-1.5">
+              <span className="text-lg">✨</span>
+              <span className="font-semibold text-indigo-700">+{rewards.xp} XP</span>
+              {rewards.streakBonus > 0 && (
+                <span className="text-xs text-indigo-500">(+{rewards.streakBonus} streak bonus)</span>
+              )}
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-lg">🪙</span>
+              <span className="font-semibold text-amber-700">+{rewards.gold} Gold</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-lg">🔥</span>
+              <span className="font-semibold text-orange-700">Streak: {rewards.newStreak} ngày</span>
+            </div>
+          </div>
+          {rewards.leveledUp && (
+            <div className="mt-2 flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-100 to-pink-100 p-2">
+              <span className="text-xl">🏆</span>
+              <span className="font-bold text-purple-800">
+                Level Up! Bạn đã đạt Level {rewards.newLevel}!
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="rounded-xl bg-white p-6 shadow-sm space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
@@ -236,23 +283,17 @@ export default function LogPage() {
           />
         </div>
 
-        <div className="flex items-center gap-4">
-          <button
-            type="submit"
-            disabled={saving || !selectedProject}
-            className="rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
-          >
-            {saving ? "Đang lưu..." : "Lưu"}
-          </button>
-          {success && (
-            <span className="text-sm text-green-600">✅ Đã lưu thành công!</span>
-          )}
-        </div>
+        <button
+          type="submit"
+          disabled={saving || !selectedProject}
+          className="rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
+        >
+          {saving ? "Đang lưu..." : "Lưu"}
+        </button>
       </form>
 
-      {/* History */}
       <div className="rounded-xl bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">📅 Lịch sử gần đây</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Lịch sử gần đây</h2>
         {logs.length === 0 ? (
           <p className="text-sm text-gray-500">Chưa có hoạt động nào</p>
         ) : (

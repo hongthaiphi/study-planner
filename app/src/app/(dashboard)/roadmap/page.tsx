@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { getFortressState } from "@/lib/types";
 import type { Milestone, Topic, UserTopic } from "@/lib/types";
+import { CreateGoalButton } from "@/components/roadmap-client";
 
 export default async function RoadmapPage() {
   const supabase = await createClient();
@@ -42,18 +43,19 @@ export default async function RoadmapPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">🗺️ Lộ trình</h1>
-        {primaryProject && (
-          <span className="rounded-lg bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700">
-            {primaryProject.name}
-          </span>
-        )}
+        <div>
+          <h1 className="text-[22px] font-bold tracking-tight text-slate-900">Lộ trình</h1>
+          {primaryProject && (
+            <p className="mt-0.5 text-[13px] text-slate-500">{primaryProject.name}</p>
+          )}
+        </div>
+        <CreateGoalButton />
       </div>
 
       {/* Milestones Timeline */}
       {milestones.length > 0 && (
-        <div className="rounded-xl bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">🎯 Mốc quan trọng</h2>
+        <div className="rounded-xl border border-slate-200/80 bg-white p-5">
+          <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-4">Mốc quan trọng</h2>
           <div className="relative">
             <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200" />
             <div className="space-y-6">
@@ -91,10 +93,10 @@ export default async function RoadmapPage() {
       )}
 
       {/* Topics / Fortresses */}
-      <div className="rounded-xl bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">🏰 Chuyên đề (Thành trì)</h2>
+      <div className="rounded-xl border border-slate-200/80 bg-white p-5">
+        <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-4">Chuyên đề</h2>
         {Object.keys(topicsByGroup).length === 0 ? (
-          <p className="text-sm text-gray-500">Chưa có chuyên đề nào</p>
+          <p className="text-[13px] text-slate-400">Chưa có chuyên đề nào. Nhấn "Tạo mục tiêu" để bắt đầu.</p>
         ) : (
           <div className="space-y-6">
             {Object.entries(topicsByGroup).map(([group, groupTopics]) => {

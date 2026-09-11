@@ -7,22 +7,79 @@ import { useRouter } from "next/navigation";
 import type { User } from "@/lib/types";
 
 const studentNav = [
-  { href: "/dashboard", label: "Đế chế", icon: "🏰" },
-  { href: "/roadmap", label: "Lộ trình", icon: "🗺️" },
-  { href: "/log", label: "Log học tập", icon: "📝" },
-  { href: "/progress", label: "Tiến bộ", icon: "📊" },
-  { href: "/coach", label: "AI Coach", icon: "🤖" },
+  { href: "/dashboard", label: "Đế chế", icon: "castle" },
+  { href: "/roadmap", label: "Lộ trình", icon: "map" },
+  { href: "/log", label: "Log học tập", icon: "edit" },
+  { href: "/progress", label: "Tiến bộ", icon: "chart" },
+  { href: "/coach", label: "AI Coach", icon: "bot" },
 ];
 
 const parentNav = [
-  { href: "/dashboard", label: "Dashboard con", icon: "🏰" },
-  { href: "/weekly-goals", label: "Mục tiêu tuần", icon: "🎯" },
-  { href: "/notes", label: "Nhật ký quan sát", icon: "📋" },
-  { href: "/child-progress", label: "Tiến bộ con", icon: "📊" },
-  { href: "/coach", label: "AI Coach", icon: "🤖" },
-  { href: "/my-projects", label: "Project cá nhân", icon: "👤" },
-  { href: "/family", label: "Gia đình", icon: "👨‍👩‍👧‍👦" },
+  { href: "/dashboard", label: "Dashboard con", icon: "castle" },
+  { href: "/weekly-goals", label: "Mục tiêu tuần", icon: "target" },
+  { href: "/notes", label: "Nhật ký quan sát", icon: "clipboard" },
+  { href: "/child-progress", label: "Tiến bộ con", icon: "chart" },
+  { href: "/coach", label: "AI Coach", icon: "bot" },
+  { href: "/my-projects", label: "Project cá nhân", icon: "user" },
+  { href: "/family", label: "Gia đình", icon: "users" },
 ];
+
+function NavIcon({ name, className }: { name: string; className?: string }) {
+  const cn = className ?? "w-[18px] h-[18px]";
+  const icons: Record<string, JSX.Element> = {
+    castle: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 21V11l4-4 4 4 4-4 4 4v10" /><path d="M4 21h16" /><path d="M10 21v-4h4v4" /><path d="M2 11h2" /><path d="M20 11h2" />
+      </svg>
+    ),
+    map: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z" /><path d="M9 3v15" /><path d="M15 6v15" />
+      </svg>
+    ),
+    edit: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z" />
+      </svg>
+    ),
+    chart: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 20V10" /><path d="M12 20V4" /><path d="M6 20v-6" />
+      </svg>
+    ),
+    bot: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="10" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v4" /><circle cx="8" cy="16" r="1" /><circle cx="16" cy="16" r="1" />
+      </svg>
+    ),
+    target: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />
+      </svg>
+    ),
+    clipboard: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="8" y="2" width="8" height="4" rx="1" /><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
+      </svg>
+    ),
+    user: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
+      </svg>
+    ),
+    users: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" />
+      </svg>
+    ),
+    logout: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
+    ),
+  };
+  return icons[name] ?? null;
+}
 
 export function Sidebar({ user }: { user: User }) {
   const pathname = usePathname();
@@ -37,41 +94,65 @@ export function Sidebar({ user }: { user: User }) {
   }
 
   return (
-    <aside className="flex w-64 flex-col border-r border-gray-200 bg-white">
-      <div className="border-b border-gray-200 p-4">
-        <h2 className="text-lg font-bold text-gray-900">⚔️ Đế chế Tri thức</h2>
-        <p className="mt-1 text-sm text-gray-500">{user.name}</p>
-        <span className="inline-block mt-1 rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700">
-          {user.role === "student" ? "Học sinh" : "Phụ huynh"}
-        </span>
+    <aside className="flex w-60 flex-col border-r border-slate-200/80 bg-white">
+      <div className="px-5 py-5">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold">
+            S
+          </div>
+          <div>
+            <h2 className="text-sm font-semibold tracking-tight text-slate-900">StudyPlanner</h2>
+            <p className="text-[11px] text-slate-400 font-medium">Đế chế Tri thức</p>
+          </div>
+        </div>
       </div>
 
-      <nav className="flex-1 space-y-1 p-3">
+      <div className="mx-4 border-t border-slate-100" />
+
+      <div className="px-4 pt-4 pb-2">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 text-[11px] font-semibold text-white">
+            {user.name.charAt(0)}
+          </div>
+          <div className="min-w-0">
+            <p className="text-[13px] font-medium text-slate-800 truncate">{user.name}</p>
+            <p className="text-[11px] text-slate-400">
+              {user.role === "student" ? "Học sinh" : "Phụ huynh"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <nav className="flex-1 px-3 py-2 space-y-0.5">
         {nav.map((item) => {
           const active = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-all duration-150 ${
                 active
-                  ? "bg-indigo-50 text-indigo-700"
-                  : "text-gray-700 hover:bg-gray-100"
+                  ? "bg-indigo-50 text-indigo-700 shadow-[inset_0_1px_0_0_rgba(99,102,241,0.1)]"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
               }`}
             >
-              <span className="text-lg">{item.icon}</span>
+              <span className={active ? "text-indigo-600" : "text-slate-400"}>
+                <NavIcon name={item.icon} />
+              </span>
               {item.label}
             </Link>
           );
         })}
       </nav>
 
-      <div className="border-t border-gray-200 p-3">
+      <div className="mx-4 border-t border-slate-100" />
+
+      <div className="p-3">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+          className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors"
         >
-          <span className="text-lg">🚪</span>
+          <NavIcon name="logout" />
           Đăng xuất
         </button>
       </div>
