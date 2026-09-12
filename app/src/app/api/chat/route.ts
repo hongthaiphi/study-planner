@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextRequest } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
 
-const anthropic = new Anthropic();
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY ?? "";
+const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL ?? "https://api.deepseek.com";
 
 function buildStudentSystemPrompt(context: string) {
   return `Bạn là AI Coach trong hệ thống "Đế chế Tri thức" — một ứng dụng game hoá lộ trình học tập.
@@ -50,6 +50,10 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!DEEPSEEK_API_KEY) {
+    return Response.json({ error: "DEEPSEEK_API_KEY chưa được cấu hình" }, { status: 500 });
   }
 
   const { messages } = await request.json();
@@ -108,17 +112,36 @@ export async function POST(request: NextRequest) {
     ? buildParentSystemPrompt(context)
     : buildStudentSystemPrompt(context);
 
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-5",
-    max_tokens: 1024,
-    system: systemPrompt,
-    messages: messages.map((m: { role: string; content: string }) => ({
-      role: m.role as "user" | "assistant",
-      content: m.content,
-    })),
-  });
+  try {
+    const res = await fetch(`${DEEPSEEK_BASE_URL}/v1/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${DEEPSEEK_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "deepseek-chat",
+        max_tokens: 1024,
+        messages: [
+          { role: "system", content: systemPrompt },
+          ...messages.map((m: { role: string; content: string }) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        ],
+      }),
+    });
 
-  const text = response.content[0].type === "text" ? response.content[0].text : "";
+    if (!res.ok) {
+      const err = await res.text();
+      return Response.json({ error: `DeepSeek API error: ${res.status}` }, { status: 502 });
+    }
 
-  return Response.json({ message: text });
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content ?? "Không có phản hồi.";
+
+    return Response.json({ message: text });
+  } catch (e: any) {
+    return Response.json({ error: e.message ?? "Lỗi kết nối DeepSeek" }, { status: 502 });
+  }
 }

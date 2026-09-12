@@ -20,6 +20,7 @@ interface EmpireMapProps {
   xp: number;
   gold: number;
   projectName: string;
+  allProjectNames?: string[];
 }
 
 const LEVEL_COLORS = {
@@ -34,7 +35,7 @@ const PROJECT_ZONE_COLORS = [
   0x6366f1, 0x10b981, 0xf59e0b, 0xef4444, 0x06b6d4, 0x8b5cf6, 0xec4899,
 ];
 
-export function EmpireMap({ topics, weather, streak, level, xp, gold }: EmpireMapProps) {
+export function EmpireMap({ topics, weather, streak, level, xp, gold, allProjectNames }: EmpireMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const animRef = useRef<number>(0);
@@ -116,7 +117,7 @@ export function EmpireMap({ topics, weather, streak, level, xp, gold }: EmpireMa
     buildBeach(scene);
 
     // Empire zone
-    const projectGroups = groupByProject(topics);
+    const projectGroups = groupByProject(topics, allProjectNames);
     const zones = layoutZones(projectGroups);
 
     // Build each project zone
@@ -230,7 +231,7 @@ export function EmpireMap({ topics, weather, streak, level, xp, gold }: EmpireMa
     setHoveredTopic(found);
   }
 
-  const projectGroups = groupByProject(topics);
+  const projectGroups = groupByProject(topics, allProjectNames);
 
   return (
     <div className="relative">
@@ -321,8 +322,11 @@ interface ProjectGroup {
   topics: TopicBuilding[];
 }
 
-function groupByProject(topics: TopicBuilding[]): ProjectGroup[] {
+function groupByProject(topics: TopicBuilding[], allProjectNames?: string[]): ProjectGroup[] {
   const map = new Map<string, TopicBuilding[]>();
+  if (allProjectNames) {
+    allProjectNames.forEach((name) => map.set(name, []));
+  }
   topics.forEach((t) => {
     const key = t.projectName ?? "Chung";
     if (!map.has(key)) map.set(key, []);

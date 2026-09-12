@@ -122,6 +122,7 @@ export default async function DashboardPage() {
         xp={gameStats?.xp ?? 0}
         gold={gameStats?.gold ?? 0}
         projectName={primaryProject?.name ?? "Đế chế"}
+        allProjectNames={projects.map((p) => p.name)}
       />
 
       {/* Stats Row */}

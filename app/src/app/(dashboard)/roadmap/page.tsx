@@ -1,30 +1,45 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { getFortressState } from "@/lib/types";
-import type { Milestone, Topic, UserTopic } from "@/lib/types";
-import { CreateGoalButton } from "@/components/roadmap-client";
+import type { Milestone, Project, Topic, UserTopic } from "@/lib/types";
+import { CreateGoalButton, ProjectTabs } from "@/components/roadmap-client";
+import {
+  EditProjectButton,
+  EditableTopicCard,
+  AddTopicButton,
+  EditableMilestone,
+  AddMilestoneButton,
+} from "@/components/edit-roadmap";
 
-export default async function RoadmapPage() {
+export default async function RoadmapPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ project?: string }>;
+}) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: projects } = await supabase
+  const { data: allProjects } = await supabase
     .from("projects")
     .select("*")
     .eq("user_id", user.id)
     .order("is_primary", { ascending: false });
 
-  const primaryProject = projects?.[0];
+  const projects = (allProjects ?? []) as Project[];
+
+  const params = await searchParams;
+  const selectedId = params.project || projects[0]?.id;
+  const selectedProject = projects.find((p) => p.id === selectedId) ?? projects[0] ?? null;
 
   let milestones: Milestone[] = [];
   let topics: Topic[] = [];
   let userTopics: (UserTopic & { topic?: Topic })[] = [];
 
-  if (primaryProject) {
+  if (selectedProject) {
     const [milestonesRes, topicsRes, userTopicsRes] = await Promise.all([
-      supabase.from("milestones").select("*").eq("project_id", primaryProject.id).order("order"),
-      supabase.from("topics").select("*").eq("project_id", primaryProject.id).order("order"),
+      supabase.from("milestones").select("*").eq("project_id", selectedProject.id).order("order"),
+      supabase.from("topics").select("*").eq("project_id", selectedProject.id).order("order"),
       supabase.from("user_topics").select("*, topic:topics(*)").eq("user_id", user.id),
     ]);
     milestones = (milestonesRes.data ?? []) as Milestone[];
@@ -41,125 +56,109 @@ export default async function RoadmapPage() {
   const userTopicMap = new Map(userTopics.map((ut) => [ut.topic_id, ut]));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="flex items-center gap-2">
           <h1 className="text-[22px] font-bold tracking-tight text-slate-900">Lộ trình</h1>
-          {primaryProject && (
-            <p className="mt-0.5 text-[13px] text-slate-500">{primaryProject.name}</p>
-          )}
+          {selectedProject && <EditProjectButton project={selectedProject} />}
         </div>
         <CreateGoalButton />
       </div>
 
+      {/* Project Tabs */}
+      {projects.length > 0 && (
+        <ProjectTabs
+          projects={projects.map((p) => ({ id: p.id, name: p.name, type: p.type }))}
+          selectedId={selectedProject?.id ?? ""}
+        />
+      )}
+
+      {!selectedProject && (
+        <div className="rounded-xl border border-slate-200/80 bg-white p-8 text-center">
+          <p className="text-[13px] text-slate-400">Chưa có mục tiêu nào. Nhấn "Tạo mục tiêu" để bắt đầu.</p>
+        </div>
+      )}
+
       {/* Milestones Timeline */}
-      {milestones.length > 0 && (
+      {selectedProject && (
         <div className="rounded-xl border border-slate-200/80 bg-white p-5">
           <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-4">Mốc quan trọng</h2>
-          <div className="relative">
-            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200" />
-            <div className="space-y-6">
-              {milestones.map((m) => {
-                const isPast = m.date && new Date(m.date) < new Date();
+          {milestones.length === 0 ? (
+            <p className="text-[13px] text-slate-400 mb-2">Chưa có mốc nào.</p>
+          ) : (
+            <div className="relative">
+              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-200" />
+              <div className="space-y-5">
+                {milestones.map((m) => (
+                  <EditableMilestone key={m.id} milestone={m} />
+                ))}
+              </div>
+            </div>
+          )}
+          <AddMilestoneButton projectId={selectedProject.id} />
+        </div>
+      )}
+
+      {/* Topics / Fortresses */}
+      {selectedProject && (
+        <div className="rounded-xl border border-slate-200/80 bg-white p-5">
+          <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-4">Chuyên đề</h2>
+          {Object.keys(topicsByGroup).length === 0 ? (
+            <p className="text-[13px] text-slate-400 mb-3">Chưa có chuyên đề nào trong mục tiêu này.</p>
+          ) : (
+            <div className="space-y-5">
+              {Object.entries(topicsByGroup).map(([group, groupTopics]) => {
+                const avgScore = groupTopics.reduce((sum, t) => {
+                  const ut = userTopicMap.get(t.id);
+                  return sum + (ut?.avg_score ?? 0);
+                }, 0) / groupTopics.length;
+
                 return (
-                  <div key={m.id} className="relative flex gap-4 pl-10">
-                    <div className={`absolute left-2.5 top-1 h-3 w-3 rounded-full border-2 ${
-                      m.status === "completed"
-                        ? "border-green-500 bg-green-500"
-                        : isPast
-                        ? "border-red-400 bg-red-400"
-                        : "border-indigo-400 bg-white"
-                    }`} />
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{m.name}</p>
-                      {m.date && (
-                        <p className="text-xs text-gray-500">
-                          {new Date(m.date).toLocaleDateString("vi-VN")}
-                          {!isPast && m.status !== "completed" && (
-                            <span className="ml-2 text-indigo-600">
-                              còn {Math.ceil((new Date(m.date).getTime() - Date.now()) / (86400000))} ngày
-                            </span>
-                          )}
-                        </p>
-                      )}
-                      {m.notes && <p className="mt-1 text-xs text-gray-400">{m.notes}</p>}
+                  <div key={group}>
+                    <div className="flex items-center justify-between mb-2.5">
+                      <h3 className="text-[13px] font-semibold text-slate-700">{group}</h3>
+                      <span className="text-[11px] text-slate-400 tabular-nums">TB: {Math.round(avgScore)}%</span>
+                    </div>
+                    <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+                      {groupTopics.map((topic) => {
+                        const ut = userTopicMap.get(topic.id);
+                        const score = ut?.avg_score ?? 0;
+                        const fortress = getFortressState(score);
+
+                        return (
+                          <EditableTopicCard
+                            key={topic.id}
+                            topic={topic}
+                            score={score}
+                            fortressLevel={fortress.level}
+                            fortressLabel={fortressLabel(fortress.level)}
+                            fortressColor={fortressColor(fortress.level)}
+                          />
+                        );
+                      })}
                     </div>
                   </div>
                 );
               })}
             </div>
+          )}
+          <div className="mt-3">
+            <AddTopicButton projectId={selectedProject.id} defaultGroup={Object.keys(topicsByGroup)[0] ?? "Chung"} />
           </div>
         </div>
       )}
-
-      {/* Topics / Fortresses */}
-      <div className="rounded-xl border border-slate-200/80 bg-white p-5">
-        <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-4">Chuyên đề</h2>
-        {Object.keys(topicsByGroup).length === 0 ? (
-          <p className="text-[13px] text-slate-400">Chưa có chuyên đề nào. Nhấn "Tạo mục tiêu" để bắt đầu.</p>
-        ) : (
-          <div className="space-y-6">
-            {Object.entries(topicsByGroup).map(([group, groupTopics]) => {
-              const avgScore = groupTopics.reduce((sum, t) => {
-                const ut = userTopicMap.get(t.id);
-                return sum + (ut?.avg_score ?? 0);
-              }, 0) / groupTopics.length;
-
-              return (
-                <div key={group}>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-semibold text-gray-700">{group}</h3>
-                    <span className="text-xs text-gray-500">TB: {Math.round(avgScore)}%</span>
-                  </div>
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {groupTopics.map((topic) => {
-                      const ut = userTopicMap.get(topic.id);
-                      const score = ut?.avg_score ?? 0;
-                      const fortress = getFortressState(score);
-
-                      return (
-                        <div
-                          key={topic.id}
-                          className="rounded-lg border border-gray-200 p-3 hover:border-indigo-300 transition-colors"
-                        >
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm font-medium text-gray-800">{topic.name}</p>
-                            <span className="text-xs text-gray-400">
-                              {Math.round(topic.weight * 100)}%
-                            </span>
-                          </div>
-                          <div className="mt-2 h-2 rounded-full bg-gray-100">
-                            <div
-                              className={`h-2 rounded-full transition-all ${fortressColor(fortress.level)}`}
-                              style={{ width: `${score}%` }}
-                            />
-                          </div>
-                          <div className="mt-1 flex items-center justify-between text-xs text-gray-500">
-                            <span>{fortressLabel(fortress.level)}</span>
-                            <span>{Math.round(score)}%</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
 
 function fortressColor(level: string) {
   switch (level) {
-    case "wasteland": return "bg-gray-300";
-    case "exploring": return "bg-yellow-400";
+    case "wasteland": return "bg-slate-300";
+    case "exploring": return "bg-amber-400";
     case "basic": return "bg-blue-400";
     case "strong": return "bg-indigo-500";
     case "legendary": return "bg-purple-600";
-    default: return "bg-gray-300";
+    default: return "bg-slate-300";
   }
 }
 

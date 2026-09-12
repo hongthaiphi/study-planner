@@ -42,3 +42,4 @@ next-env.d.ts
 
 ../supebase/.temp
 ../supebase/.branches
+../supabase/.temp/
