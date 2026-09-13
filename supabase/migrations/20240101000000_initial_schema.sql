@@ -1,14 +1,14 @@
 -- StudyPlanner MVP — Initial Schema
 
 -- Enable UUID generation
-create extension if not exists "uuid-ossp";
+create extension if not exists "uuid-ossp" with schema extensions;
 
 -- ============================================
 -- USERS & FAMILIES
 -- ============================================
 
 create table users (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   email text unique not null,
   name text not null,
   avatar text,
@@ -17,13 +17,13 @@ create table users (
 );
 
 create table families (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null,
   created_at timestamptz default now()
 );
 
 create table family_members (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   family_id uuid not null references families(id) on delete cascade,
   user_id uuid not null references users(id) on delete cascade,
   role_in_family text not null check (role_in_family in ('parent', 'child')),
@@ -36,14 +36,14 @@ create table family_members (
 -- ============================================
 
 create table goal_templates (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null,
   description text,
   category text not null
 );
 
 create table projects (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   name text not null,
   type text not null check (type in ('exam', 'learning', 'fitness', 'skill', 'habit', 'custom')),
@@ -62,7 +62,7 @@ create index idx_projects_user on projects(user_id);
 -- ============================================
 
 create table milestones (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   project_id uuid not null references projects(id) on delete cascade,
   name text not null,
   date date,
@@ -72,7 +72,7 @@ create table milestones (
 );
 
 create table topics (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   template_id uuid references goal_templates(id),
   project_id uuid references projects(id) on delete cascade,
   name text not null,
@@ -83,7 +83,7 @@ create table topics (
 );
 
 create table user_topics (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   topic_id uuid not null references topics(id) on delete cascade,
   status text default 'not_started' check (status in ('not_started', 'in_progress', 'completed', 'mastered')),
@@ -97,7 +97,7 @@ create table user_topics (
 -- ============================================
 
 create table activity_logs (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   project_id uuid not null references projects(id) on delete cascade,
   topic_id uuid references topics(id),
@@ -119,7 +119,7 @@ create index idx_activity_project on activity_logs(project_id);
 -- ============================================
 
 create table weekly_goals (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   student_id uuid not null references users(id) on delete cascade,
   set_by_user_id uuid not null references users(id),
   week_start date not null,
@@ -130,7 +130,7 @@ create table weekly_goals (
 );
 
 create table parent_notes (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   parent_id uuid not null references users(id) on delete cascade,
   student_id uuid not null references users(id),
   date date not null default current_date,
@@ -143,7 +143,7 @@ create table parent_notes (
 -- ============================================
 
 create table user_game_stats (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid unique not null references users(id) on delete cascade,
   level int default 1,
   xp int default 0,
@@ -156,7 +156,7 @@ create table user_game_stats (
 );
 
 create table quests (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   project_id uuid references projects(id) on delete cascade,
   week_start date not null,
@@ -175,7 +175,7 @@ create table quests (
 create index idx_quests_user_week on quests(user_id, week_start);
 
 create table buildings (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   topic_id uuid not null references topics(id) on delete cascade,
   type text not null check (type in ('library', 'training', 'tower', 'forge')),
@@ -184,7 +184,7 @@ create table buildings (
 );
 
 create table achievements (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   type text not null,
   title text not null,
@@ -197,7 +197,7 @@ create table achievements (
 -- ============================================
 
 create table ai_reports (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   project_id uuid references projects(id) on delete cascade,
   type text not null check (type in ('daily_suggestion', 'weekly_review', 'alert', 'parent_weekly')),
