@@ -54,8 +54,8 @@ export default function CoachPage() {
   ];
 
   return (
-    <div className="flex h-[calc(100vh-3rem)] flex-col">
-      <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent mb-4">AI Coach</h1>
+    <div className="flex h-[calc(100svh-8rem)] md:h-[calc(100vh-3rem)] flex-col">
+      <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent mb-3 sm:mb-4">AI Coach</h1>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto rounded-2xl border border-slate-200/60 bg-white shadow-sm shadow-slate-200/50 p-5 space-y-4">
@@ -90,7 +90,7 @@ export default function CoachPage() {
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 text-[13px] ${
+              className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 text-[13px] ${
                 msg.role === "user"
                   ? "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-md shadow-indigo-500/20"
                   : "bg-slate-50 text-slate-800 border border-slate-100 shadow-sm"

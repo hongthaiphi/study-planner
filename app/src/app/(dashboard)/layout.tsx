@@ -25,7 +25,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar user={profile} />
-      <main className="flex-1 overflow-y-auto bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 px-6 py-5">
+      <main className="flex-1 overflow-y-auto bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 px-4 py-4 md:px-6 md:py-5 pt-[64px] pb-[72px] md:pt-5 md:pb-5">
         {children}
       </main>
     </div>

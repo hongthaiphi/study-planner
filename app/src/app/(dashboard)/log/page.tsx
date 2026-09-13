@@ -131,7 +131,7 @@ export default function LogPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">Log hoạt động</h1>
+      <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">Log hoạt động</h1>
 
       {rewards && (
         <div className="rounded-xl border-2 border-yellow-400 bg-gradient-to-r from-yellow-50 to-amber-50 p-4 shadow-lg animate-[fadeIn_0.3s_ease-out]">

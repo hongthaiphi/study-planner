@@ -32,12 +32,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 relative overflow-hidden">
+    <div className="flex min-h-svh w-full items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 relative overflow-hidden px-4">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-600/20 via-transparent to-transparent" />
       <div className="absolute top-1/4 -left-20 h-72 w-72 rounded-full bg-indigo-600/10 blur-3xl" />
       <div className="absolute bottom-1/4 -right-20 h-72 w-72 rounded-full bg-purple-600/10 blur-3xl" />
 
-      <div className="relative w-full max-w-sm space-y-6 rounded-2xl border border-white/10 bg-white/5 p-7 shadow-2xl shadow-black/20 backdrop-blur-xl">
+      <div className="relative w-full max-w-sm space-y-6 rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-7 shadow-2xl shadow-black/20 backdrop-blur-xl">
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-xl font-bold text-white shadow-xl shadow-indigo-500/30 ring-1 ring-white/10">
             S

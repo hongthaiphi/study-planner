@@ -96,19 +96,19 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">
             Đế chế của bạn
           </h1>
-          <p className="mt-1 text-[13px] text-slate-500 font-medium">
+          <p className="mt-1 text-[12px] sm:text-[13px] text-slate-500 font-medium">
             {weather.emoji} {weather.name} · {levelTitle} · Level {gameStats?.level ?? 1}
           </p>
         </div>
         {daysUntilDeadline !== null && (
-          <div className="rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 px-5 py-3 text-white shadow-xl shadow-indigo-500/25 ring-1 ring-white/10">
+          <div className="rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 px-4 py-2.5 sm:px-5 sm:py-3 text-white shadow-xl shadow-indigo-500/25 ring-1 ring-white/10 self-start">
             <p className="text-[11px] font-semibold text-indigo-200 uppercase tracking-wider">Countdown</p>
-            <p className="text-3xl font-black tabular-nums tracking-tight">{daysUntilDeadline} <span className="text-sm font-semibold text-indigo-200">ngày</span></p>
+            <p className="text-2xl sm:text-3xl font-black tabular-nums tracking-tight">{daysUntilDeadline} <span className="text-sm font-semibold text-indigo-200">ngày</span></p>
           </div>
         )}
       </div>
