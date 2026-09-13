@@ -26,7 +26,7 @@ const parentNav = [
 
 function NavIcon({ name, className }: { name: string; className?: string }) {
   const cn = className ?? "w-[18px] h-[18px]";
-  const icons: Record<string, JSX.Element> = {
+  const icons: Record<string, React.ReactNode> = {
     castle: (
       <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 21V11l4-4 4 4 4-4 4 4v10" /><path d="M4 21h16" /><path d="M10 21v-4h4v4" /><path d="M2 11h2" /><path d="M20 11h2" />
@@ -94,28 +94,28 @@ export function Sidebar({ user }: { user: User }) {
   }
 
   return (
-    <aside className="flex w-60 flex-col border-r border-slate-200/80 bg-white">
+    <aside className="flex w-60 flex-col bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950">
       <div className="px-5 py-5">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-sm font-bold shadow-lg shadow-indigo-500/30">
             S
           </div>
           <div>
-            <h2 className="text-sm font-semibold tracking-tight text-slate-900">StudyPlanner</h2>
-            <p className="text-[11px] text-slate-400 font-medium">Đế chế Tri thức</p>
+            <h2 className="text-sm font-bold tracking-tight text-white">StudyPlanner</h2>
+            <p className="text-[11px] text-indigo-300/70 font-medium">Đế chế Tri thức</p>
           </div>
         </div>
       </div>
 
-      <div className="mx-4 border-t border-slate-100" />
+      <div className="mx-4 border-t border-white/10" />
 
       <div className="px-4 pt-4 pb-2">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 text-[11px] font-semibold text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-[12px] font-bold text-white shadow-md shadow-amber-500/25 ring-2 ring-amber-400/20">
             {user.name.charAt(0)}
           </div>
           <div className="min-w-0">
-            <p className="text-[13px] font-medium text-slate-800 truncate">{user.name}</p>
+            <p className="text-[13px] font-semibold text-white truncate">{user.name}</p>
             <p className="text-[11px] text-slate-400">
               {user.role === "student" ? "Học sinh" : "Phụ huynh"}
             </p>
@@ -130,13 +130,13 @@ export function Sidebar({ user }: { user: User }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-all duration-150 ${
+              className={`flex items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-[13px] font-medium transition-all duration-150 ${
                 active
-                  ? "bg-indigo-50 text-indigo-700 shadow-[inset_0_1px_0_0_rgba(99,102,241,0.1)]"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  ? "bg-gradient-to-r from-indigo-600/90 to-indigo-500/80 text-white shadow-lg shadow-indigo-500/20"
+                  : "text-slate-400 hover:bg-white/5 hover:text-white"
               }`}
             >
-              <span className={active ? "text-indigo-600" : "text-slate-400"}>
+              <span className={active ? "text-indigo-200" : "text-slate-500"}>
                 <NavIcon name={item.icon} />
               </span>
               {item.label}
@@ -145,12 +145,12 @@ export function Sidebar({ user }: { user: User }) {
         })}
       </nav>
 
-      <div className="mx-4 border-t border-slate-100" />
+      <div className="mx-4 border-t border-white/10" />
 
       <div className="p-3">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+          className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium text-slate-500 hover:bg-red-500/10 hover:text-red-400 transition-colors"
         >
           <NavIcon name="logout" />
           Đăng xuất

@@ -98,17 +98,17 @@ export default async function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-bold tracking-tight text-slate-900">
+          <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">
             Đế chế của bạn
           </h1>
-          <p className="mt-0.5 text-[13px] text-slate-500">
+          <p className="mt-1 text-[13px] text-slate-500 font-medium">
             {weather.emoji} {weather.name} · {levelTitle} · Level {gameStats?.level ?? 1}
           </p>
         </div>
         {daysUntilDeadline !== null && (
-          <div className="rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-700 px-4 py-2.5 text-white shadow-sm">
-            <p className="text-[11px] font-medium text-indigo-200 uppercase tracking-wider">Countdown</p>
-            <p className="text-2xl font-bold tabular-nums tracking-tight">{daysUntilDeadline} <span className="text-sm font-medium text-indigo-200">ngày</span></p>
+          <div className="rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 px-5 py-3 text-white shadow-xl shadow-indigo-500/25 ring-1 ring-white/10">
+            <p className="text-[11px] font-semibold text-indigo-200 uppercase tracking-wider">Countdown</p>
+            <p className="text-3xl font-black tabular-nums tracking-tight">{daysUntilDeadline} <span className="text-sm font-semibold text-indigo-200">ngày</span></p>
           </div>
         )}
       </div>
@@ -127,15 +127,18 @@ export default async function DashboardPage() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label="Level" value={gameStats?.level ?? 1} color="indigo" />
-        <StatCard label="XP" value={gameStats?.xp ?? 0} color="cyan" />
-        <StatCard label="Vàng" value={gameStats?.gold ?? 0} color="amber" />
-        <StatCard label="Streak" value={`${gameStats?.current_streak ?? 0} ngày`} color="orange" />
+        <StatCard label="Level" value={gameStats?.level ?? 1} color="indigo" icon="🏰" />
+        <StatCard label="XP" value={gameStats?.xp ?? 0} color="cyan" icon="✨" />
+        <StatCard label="Vàng" value={gameStats?.gold ?? 0} color="amber" icon="🪙" />
+        <StatCard label="Streak" value={`${gameStats?.current_streak ?? 0} ngày`} color="orange" icon="🔥" />
       </div>
 
       {/* Quests */}
-      <div className="rounded-xl border border-slate-200/80 bg-white p-5">
-        <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-3">Nhiệm vụ tuần</h2>
+      <div className="rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm shadow-slate-200/50">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-base">⚔️</span>
+          <h2 className="text-[15px] font-bold tracking-tight text-slate-900">Nhiệm vụ tuần</h2>
+        </div>
         {quests.length === 0 ? (
           <p className="text-[13px] text-slate-400">Chưa có nhiệm vụ nào tuần này</p>
         ) : (
@@ -200,14 +203,17 @@ async function ParentDashboard({ supabase, userId }: { supabase: any; userId: st
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-[22px] font-bold tracking-tight text-slate-900">
+        <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">
           Dashboard Phụ huynh
         </h1>
-        <p className="mt-0.5 text-[13px] text-slate-500">{weather.emoji} Theo dõi lộ trình con & project cá nhân</p>
+        <p className="mt-1 text-[13px] text-slate-500 font-medium">{weather.emoji} Theo dõi lộ trình con & project cá nhân</p>
       </div>
 
-      <div className="rounded-xl border border-slate-200/80 bg-white p-5">
-        <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-3">Con của bạn</h2>
+      <div className="rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm shadow-slate-200/50">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-base">👨‍👩‍👧‍👦</span>
+          <h2 className="text-[15px] font-bold tracking-tight text-slate-900">Con của bạn</h2>
+        </div>
         {children.length === 0 ? (
           <p className="text-[13px] text-slate-400">Chưa liên kết với con nào</p>
         ) : (
@@ -230,32 +236,32 @@ async function ParentDashboard({ supabase, userId }: { supabase: any; userId: st
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label="Level" value={gameStats?.level ?? 1} color="indigo" />
-        <StatCard label="XP" value={gameStats?.xp ?? 0} color="cyan" />
-        <StatCard label="Streak" value={`${gameStats?.current_streak ?? 0} ngày`} color="orange" />
-        <StatCard label="Perfect Weeks" value={gameStats?.perfect_weeks ?? 0} color="emerald" />
+        <StatCard label="Level" value={gameStats?.level ?? 1} color="indigo" icon="🏰" />
+        <StatCard label="XP" value={gameStats?.xp ?? 0} color="cyan" icon="✨" />
+        <StatCard label="Streak" value={`${gameStats?.current_streak ?? 0} ngày`} color="orange" icon="🔥" />
+        <StatCard label="Perfect Weeks" value={gameStats?.perfect_weeks ?? 0} color="emerald" icon="🏆" />
       </div>
     </div>
   );
 }
 
-const STAT_COLORS: Record<string, { dot: string; text: string }> = {
-  indigo: { dot: "bg-indigo-500", text: "text-indigo-600" },
-  cyan: { dot: "bg-cyan-500", text: "text-cyan-600" },
-  amber: { dot: "bg-amber-500", text: "text-amber-600" },
-  orange: { dot: "bg-orange-500", text: "text-orange-600" },
-  emerald: { dot: "bg-emerald-500", text: "text-emerald-600" },
+const STAT_COLORS: Record<string, { bg: string; text: string; ring: string }> = {
+  indigo: { bg: "from-indigo-500 to-indigo-700", text: "text-white", ring: "ring-indigo-400/20" },
+  cyan: { bg: "from-cyan-500 to-teal-600", text: "text-white", ring: "ring-cyan-400/20" },
+  amber: { bg: "from-amber-400 to-orange-500", text: "text-white", ring: "ring-amber-400/20" },
+  orange: { bg: "from-orange-500 to-red-500", text: "text-white", ring: "ring-orange-400/20" },
+  emerald: { bg: "from-emerald-500 to-green-600", text: "text-white", ring: "ring-emerald-400/20" },
 };
 
-function StatCard({ label, value, color = "indigo" }: { label: string; value: string | number; color?: string }) {
+function StatCard({ label, value, color = "indigo", icon }: { label: string; value: string | number; color?: string; icon?: string }) {
   const c = STAT_COLORS[color] ?? STAT_COLORS.indigo;
   return (
-    <div className="rounded-xl border border-slate-200/80 bg-white px-4 py-3.5">
-      <div className="flex items-center gap-1.5">
-        <span className={`h-1.5 w-1.5 rounded-full ${c.dot}`} />
-        <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">{label}</p>
+    <div className={`rounded-2xl bg-gradient-to-br ${c.bg} px-4 py-4 shadow-lg ring-1 ${c.ring}`}>
+      <div className="flex items-center justify-between">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-white/70">{label}</p>
+        {icon && <span className="text-lg opacity-80">{icon}</span>}
       </div>
-      <p className={`mt-1.5 text-xl font-bold tabular-nums tracking-tight ${c.text}`}>{value}</p>
+      <p className={`mt-1 text-2xl font-black tabular-nums tracking-tight ${c.text}`}>{value}</p>
     </div>
   );
 }

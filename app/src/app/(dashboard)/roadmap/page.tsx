@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getFortressState } from "@/lib/types";
 import type { Milestone, Project, Topic, UserTopic } from "@/lib/types";
 import { CreateGoalButton, ProjectTabs } from "@/components/roadmap-client";
+import { ImportRoadmapButton } from "@/components/import-roadmap";
 import {
   EditProjectButton,
   EditableTopicCard,
@@ -59,10 +60,13 @@ export default async function RoadmapPage({
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h1 className="text-[22px] font-bold tracking-tight text-slate-900">Lộ trình</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">Lộ trình</h1>
           {selectedProject && <EditProjectButton project={selectedProject} />}
         </div>
-        <CreateGoalButton />
+        <div className="flex gap-2">
+          <ImportRoadmapButton />
+          <CreateGoalButton />
+        </div>
       </div>
 
       {/* Project Tabs */}
@@ -74,15 +78,19 @@ export default async function RoadmapPage({
       )}
 
       {!selectedProject && (
-        <div className="rounded-xl border border-slate-200/80 bg-white p-8 text-center">
-          <p className="text-[13px] text-slate-400">Chưa có mục tiêu nào. Nhấn "Tạo mục tiêu" để bắt đầu.</p>
+        <div className="rounded-2xl border border-slate-200/60 bg-white p-8 text-center shadow-sm">
+          <p className="text-4xl mb-3">🗺️</p>
+          <p className="text-[13px] text-slate-500 font-medium">Chưa có mục tiêu nào. Nhấn "Tạo mục tiêu" để bắt đầu.</p>
         </div>
       )}
 
       {/* Milestones Timeline */}
       {selectedProject && (
-        <div className="rounded-xl border border-slate-200/80 bg-white p-5">
-          <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-4">Mốc quan trọng</h2>
+        <div className="rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm shadow-slate-200/50">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-base">🏁</span>
+            <h2 className="text-[15px] font-bold tracking-tight text-slate-900">Mốc quan trọng</h2>
+          </div>
           {milestones.length === 0 ? (
             <p className="text-[13px] text-slate-400 mb-2">Chưa có mốc nào.</p>
           ) : (
@@ -101,8 +109,11 @@ export default async function RoadmapPage({
 
       {/* Topics / Fortresses */}
       {selectedProject && (
-        <div className="rounded-xl border border-slate-200/80 bg-white p-5">
-          <h2 className="text-[15px] font-semibold tracking-tight text-slate-900 mb-4">Chuyên đề</h2>
+        <div className="rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm shadow-slate-200/50">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-base">🏰</span>
+            <h2 className="text-[15px] font-bold tracking-tight text-slate-900">Chuyên đề</h2>
+          </div>
           {Object.keys(topicsByGroup).length === 0 ? (
             <p className="text-[13px] text-slate-400 mb-3">Chưa có chuyên đề nào trong mục tiêu này.</p>
           ) : (
@@ -153,12 +164,12 @@ export default async function RoadmapPage({
 
 function fortressColor(level: string) {
   switch (level) {
-    case "wasteland": return "bg-slate-300";
-    case "exploring": return "bg-amber-400";
-    case "basic": return "bg-blue-400";
-    case "strong": return "bg-indigo-500";
-    case "legendary": return "bg-purple-600";
-    default: return "bg-slate-300";
+    case "wasteland": return "bg-gradient-to-r from-slate-300 to-slate-400";
+    case "exploring": return "bg-gradient-to-r from-amber-400 to-orange-400";
+    case "basic": return "bg-gradient-to-r from-blue-400 to-blue-500";
+    case "strong": return "bg-gradient-to-r from-indigo-500 to-purple-500";
+    case "legendary": return "bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500";
+    default: return "bg-gradient-to-r from-slate-300 to-slate-400";
   }
 }
 

@@ -185,7 +185,7 @@ export function EmpireMap({ topics, weather, streak, level, xp, gold, allProject
     animate();
 
     function onResize() {
-      const w = container.clientWidth;
+      const w = container!.clientWidth;
       camera.aspect = w / H;
       camera.updateProjectionMatrix();
       renderer.setSize(w, H);

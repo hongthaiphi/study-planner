@@ -131,7 +131,7 @@ export default function LogPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Log hoạt động</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">Log hoạt động</h1>
 
       {rewards && (
         <div className="rounded-xl border-2 border-yellow-400 bg-gradient-to-r from-yellow-50 to-amber-50 p-4 shadow-lg animate-[fadeIn_0.3s_ease-out]">
@@ -167,14 +167,14 @@ export default function LogPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="rounded-xl bg-white p-6 shadow-sm space-y-4">
+      <form onSubmit={handleSubmit} className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm shadow-slate-200/50 space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Project</label>
+            <label className="block text-[13px] font-semibold text-slate-700">Project</label>
             <select
               value={selectedProject}
               onChange={(e) => setSelectedProject(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-[13px] text-slate-900 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors"
             >
               {projects.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -185,11 +185,11 @@ export default function LogPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Chuyên đề / Mảng</label>
+            <label className="block text-[13px] font-semibold text-slate-700">Chuyên đề / Mảng</label>
             <select
               value={selectedTopic}
               onChange={(e) => setSelectedTopic(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-[13px] text-slate-900 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors"
             >
               <option value="">— Không chọn —</option>
               {topics.map((t) => (
@@ -203,11 +203,11 @@ export default function LogPage() {
 
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Loại hoạt động</label>
+            <label className="block text-[13px] font-semibold text-slate-700">Loại hoạt động</label>
             <select
               value={activityType}
               onChange={(e) => setActivityType(e.target.value as ActivityType)}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-[13px] text-slate-900 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors"
             >
               {activityTypes.map((t) => (
                 <option key={t.value} value={t.value}>{t.label}</option>
@@ -216,36 +216,36 @@ export default function LogPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Thời gian (phút)</label>
+            <label className="block text-[13px] font-semibold text-slate-700">Thời gian (phút)</label>
             <input
               type="number"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-[13px] text-slate-900 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors"
               placeholder="45"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-[13px] font-semibold text-slate-700">
               Kết quả ({currentProject?.unit ?? "điểm"})
             </label>
-            <div className="mt-1 flex gap-2">
+            <div className="mt-1.5 flex gap-2">
               <input
                 type="number"
                 step="0.1"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                className="block w-full rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-[13px] text-slate-900 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors"
                 placeholder="8"
               />
-              <span className="flex items-center text-gray-400">/</span>
+              <span className="flex items-center text-slate-400 font-bold">/</span>
               <input
                 type="number"
                 step="0.1"
                 value={maxValue}
                 onChange={(e) => setMaxValue(e.target.value)}
-                className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                className="block w-full rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-[13px] text-slate-900 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors"
                 placeholder="10"
               />
             </div>
@@ -253,17 +253,17 @@ export default function LogPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Tâm trạng</label>
-          <div className="mt-2 flex gap-2">
+          <label className="block text-[13px] font-semibold text-slate-700">Tâm trạng</label>
+          <div className="mt-2 flex flex-wrap gap-2">
             {moodOptions.map((m) => (
               <button
                 key={m.value}
                 type="button"
                 onClick={() => setMood(mood === m.value ? "" : m.value)}
-                className={`rounded-lg border px-3 py-1.5 text-sm ${
+                className={`rounded-xl border px-3.5 py-2 text-[13px] font-medium transition-all ${
                   mood === m.value
-                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                    : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                    ? "border-indigo-400 bg-indigo-50 text-indigo-700 ring-2 ring-indigo-500/20 shadow-sm"
+                    : "border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
                 }`}
               >
                 {m.emoji} {m.label}
@@ -273,12 +273,12 @@ export default function LogPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Ghi chú</label>
+          <label className="block text-[13px] font-semibold text-slate-700">Ghi chú</label>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={2}
-            className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-[13px] text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors resize-none"
             placeholder="Hôm nay học được gì..."
           />
         </div>
@@ -286,29 +286,32 @@ export default function LogPage() {
         <button
           type="submit"
           disabled={saving || !selectedProject}
-          className="rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
+          className="rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-6 py-2.5 text-[13px] font-bold text-white shadow-lg shadow-indigo-500/25 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 transition-all"
         >
-          {saving ? "Đang lưu..." : "Lưu"}
+          {saving ? "Đang lưu..." : "Lưu hoạt động"}
         </button>
       </form>
 
-      <div className="rounded-xl bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Lịch sử gần đây</h2>
+      <div className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm shadow-slate-200/50">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-base">📋</span>
+          <h2 className="text-[15px] font-bold tracking-tight text-slate-900">Lịch sử gần đây</h2>
+        </div>
         {logs.length === 0 ? (
-          <p className="text-sm text-gray-500">Chưa có hoạt động nào</p>
+          <p className="text-[13px] text-slate-400">Chưa có hoạt động nào</p>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {logs.map((log) => (
-              <div key={log.id} className="flex items-center justify-between rounded-lg border border-gray-100 p-3">
+              <div key={log.id} className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/30 p-3.5 hover:border-slate-200 transition-colors">
                 <div className="flex items-center gap-3">
-                  <span className="text-lg">
+                  <span className="text-xl">
                     {log.mood ? moodOptions.find((m) => m.value === log.mood)?.emoji ?? "📝" : "📝"}
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-[13px] font-semibold text-slate-800">
                       {log.topic?.name ?? activityTypes.find((t) => t.value === log.type)?.label}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-[11px] text-slate-400 mt-0.5">
                       {new Date(log.date).toLocaleDateString("vi-VN")}
                       {log.duration_minutes && ` — ${log.duration_minutes} phút`}
                       {log.value != null && log.max_value != null && ` — ${log.value}/${log.max_value}`}
@@ -316,7 +319,7 @@ export default function LogPage() {
                   </div>
                 </div>
                 {log.notes && (
-                  <p className="max-w-xs truncate text-xs text-gray-400">{log.notes}</p>
+                  <p className="max-w-xs truncate text-[11px] text-slate-400 italic">{log.notes}</p>
                 )}
               </div>
             ))}

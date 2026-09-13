@@ -11,7 +11,7 @@ export function CreateGoalButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
+        className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2.5 text-[13px] font-bold text-white shadow-lg shadow-indigo-500/25 hover:from-indigo-500 hover:to-indigo-400 transition-all"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <path d="M12 5v14M5 12h14" />
@@ -54,9 +54,9 @@ export function ProjectTabs({
           <button
             key={p.id}
             onClick={() => handleSelect(p.id)}
-            className={`flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-2 text-[13px] font-medium transition-all ${
+            className={`flex items-center gap-1.5 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-all ${
               active
-                ? "bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-indigo-200"
+                ? "bg-gradient-to-r from-indigo-50 to-indigo-100/80 text-indigo-700 shadow-md shadow-indigo-100/50 ring-1 ring-indigo-200/80"
                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
             }`}
           >

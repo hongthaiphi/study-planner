@@ -55,17 +55,19 @@ export default function CoachPage() {
 
   return (
     <div className="flex h-[calc(100vh-3rem)] flex-col">
-      <h1 className="text-2xl font-bold text-gray-900 mb-4">🤖 AI Coach</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent mb-4">AI Coach</h1>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto rounded-xl bg-white shadow-sm p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto rounded-2xl border border-slate-200/60 bg-white shadow-sm shadow-slate-200/50 p-5 space-y-4">
         {messages.length === 0 && (
           <div className="flex h-full flex-col items-center justify-center text-center">
-            <p className="text-4xl mb-4">⚔️</p>
-            <p className="text-lg font-semibold text-gray-700">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl shadow-indigo-500/25">
+              <span className="text-3xl">⚔️</span>
+            </div>
+            <p className="text-lg font-bold text-slate-800">
               Chào Lãnh chúa! Hôm nay cần gì?
             </p>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1.5 text-[13px] text-slate-500">
               Hỏi về lộ trình, gợi ý học tập, hoặc đánh giá tiến bộ
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -73,7 +75,7 @@ export default function CoachPage() {
                 <button
                   key={prompt}
                   onClick={() => setInput(prompt)}
-                  className="rounded-full border border-gray-200 px-4 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
+                  className="rounded-full border border-slate-200 bg-slate-50/50 px-4 py-2 text-[13px] font-medium text-slate-600 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-all"
                 >
                   {prompt}
                 </button>
@@ -88,21 +90,24 @@ export default function CoachPage() {
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
+              className={`max-w-[80%] rounded-2xl px-4 py-3 text-[13px] ${
                 msg.role === "user"
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-100 text-gray-800"
+                  ? "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-md shadow-indigo-500/20"
+                  : "bg-slate-50 text-slate-800 border border-slate-100 shadow-sm"
               }`}
             >
-              <p className="whitespace-pre-wrap">{msg.content}</p>
+              <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
             </div>
           </div>
         ))}
 
         {loading && (
           <div className="flex justify-start">
-            <div className="rounded-2xl bg-gray-100 px-4 py-2.5 text-sm text-gray-500">
-              Đang suy nghĩ...
+            <div className="rounded-2xl bg-slate-50 border border-slate-100 px-4 py-3 text-[13px] text-slate-400 shadow-sm">
+              <span className="inline-flex items-center gap-1">
+                <span className="animate-pulse">Đang suy nghĩ</span>
+                <span className="animate-bounce">...</span>
+              </span>
             </div>
           </div>
         )}
@@ -117,12 +122,12 @@ export default function CoachPage() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Hỏi AI Coach..."
-          className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-[13px] shadow-sm focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors"
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
+          className="rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-6 py-3 text-[13px] font-bold text-white shadow-lg shadow-indigo-500/25 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 transition-all"
         >
           Gửi
         </button>
