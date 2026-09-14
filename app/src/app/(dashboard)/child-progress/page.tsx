@@ -34,7 +34,7 @@ export default function ChildProgressPage() {
         .from("family_members")
         .select("*, user:users(*)")
         .eq("family_id", fm.family_id)
-        .eq("role_in_family", "child");
+        .in("role_in_family", ["child", "member"]);
 
       const kids = (members ?? []).map((m: any) => m.user).filter(Boolean);
       setChildren(kids);
@@ -62,7 +62,7 @@ export default function ChildProgressPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">📊 Tiến bộ con</h1>
+      <h1 className="text-2xl font-bold text-gray-900">📊 Tiến bộ học sinh</h1>
 
       {children.length > 1 && (
         <div className="flex gap-2">

@@ -37,7 +37,7 @@ export default function WeeklyGoalsPage() {
         .from("family_members")
         .select("*, user:users(*)")
         .eq("family_id", familyMembers.family_id)
-        .eq("role_in_family", "child");
+        .in("role_in_family", ["child", "member"]);
 
       const kids = (members ?? []).map((m: any) => m.user).filter(Boolean);
       setChildren(kids);

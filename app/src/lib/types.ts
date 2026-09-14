@@ -1,11 +1,11 @@
-export type UserRole = "student" | "parent";
-export type FamilyRole = "parent" | "child";
+export type UserRole = "student" | "mentor";
+export type FamilyRole = "mentor" | "member";
 export type ProjectType = "exam" | "learning" | "fitness" | "skill" | "habit" | "custom";
 export type ActivityType = "theory" | "exercise" | "mock_exam" | "practice" | "session";
 export type Mood = "great" | "good" | "okay" | "tired" | "frustrated";
 export type TopicStatus = "not_started" | "in_progress" | "completed" | "mastered";
 export type QuestTier = "normal" | "challenge" | "epic" | "royal";
-export type QuestSource = "ai" | "parent" | "system";
+export type QuestSource = "ai" | "mentor" | "system";
 export type BuildingType = "library" | "training" | "tower" | "forge";
 export type MilestoneStatus = "pending" | "completed" | "skipped";
 
@@ -18,20 +18,25 @@ export interface User {
   created_at: string;
 }
 
-export interface Family {
+export interface Group {
   id: string;
   name: string;
   created_at: string;
 }
 
-export interface FamilyMember {
+export interface GroupMember {
   id: string;
-  family_id: string;
+  group_id: string;
   user_id: string;
-  role_in_family: FamilyRole;
+  role_in_group: FamilyRole;
   created_at: string;
   user?: User;
 }
+
+/** @deprecated Use Group */
+export type Family = Group;
+/** @deprecated Use GroupMember */
+export type FamilyMember = GroupMember;
 
 export interface Project {
   id: string;
@@ -155,7 +160,7 @@ export interface AiReport {
   id: string;
   user_id: string;
   project_id: string | null;
-  type: "daily_suggestion" | "weekly_review" | "alert" | "parent_weekly";
+  type: "daily_suggestion" | "weekly_review" | "alert" | "mentor_weekly";
   content: string;
   created_at: string;
 }

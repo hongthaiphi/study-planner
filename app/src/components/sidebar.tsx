@@ -15,14 +15,14 @@ const studentNav = [
   { href: "/coach", label: "Coach", icon: "bot" },
 ];
 
-const parentNav = [
+const mentorNav = [
   { href: "/dashboard", label: "Dashboard", icon: "castle" },
   { href: "/weekly-goals", label: "Mục tiêu", icon: "target" },
   { href: "/notes", label: "Nhật ký", icon: "clipboard" },
   { href: "/child-progress", label: "Tiến bộ", icon: "chart" },
   { href: "/coach", label: "Coach", icon: "bot" },
   { href: "/my-projects", label: "Project", icon: "user" },
-  { href: "/family", label: "Gia đình", icon: "users" },
+  { href: "/family", label: "Nhóm", icon: "users" },
 ];
 
 function NavIcon({ name, className }: { name: string; className?: string }) {
@@ -96,7 +96,8 @@ export function Sidebar({ user }: { user: User }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const nav = user.role === "student" ? studentNav : parentNav;
+  const isMentor = user.role === "mentor" || (user.role as string) === "parent";
+  const nav = isMentor ? mentorNav : studentNav;
 
   async function handleLogout() {
     const supabase = createClient();
@@ -163,7 +164,7 @@ export function Sidebar({ user }: { user: User }) {
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-lg border-t border-white/10 flex items-center justify-around px-1 py-1.5 safe-bottom">
-        {(user.role === "student" ? studentNav : studentNav).slice(0, 5).map((item) => {
+        {(isMentor ? mentorNav : studentNav).slice(0, 5).map((item) => {
           const active = pathname === item.href;
           return (
             <Link
@@ -204,7 +205,7 @@ export function Sidebar({ user }: { user: User }) {
             <div className="min-w-0">
               <p className="text-[13px] font-semibold text-white truncate">{user.name}</p>
               <p className="text-[11px] text-slate-400">
-                {user.role === "student" ? "Học sinh" : "Phụ huynh"}
+                {isMentor ? "Mentor" : "Học sinh"}
               </p>
             </div>
           </div>

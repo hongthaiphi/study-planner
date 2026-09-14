@@ -108,8 +108,8 @@ export default function LandingPage() {
           />
           <ReasonCard
             emoji="👨‍👩‍👧"
-            title="Phụ huynh muốn đồng hành nhưng không biết cách"
-            description="Hỏi con thì con bảo 'đang học'. Muốn theo dõi nhưng không muốn gây áp lực. Cần một cách nhẹ nhàng để nắm tình hình."
+            title="Mentor muốn đồng hành nhưng không biết cách"
+            description="Phụ huynh, gia sư, thầy cô — muốn theo dõi nhưng không muốn gây áp lực. Cần một cách nhẹ nhàng để nắm tình hình."
           />
         </div>
       </section>
@@ -150,8 +150,8 @@ export default function LandingPage() {
           />
           <FeatureCard
             icon="👨‍👩‍👧‍👦"
-            title="Kết nối gia đình"
-            description="Phụ huynh có dashboard riêng để theo dõi con, ghi nhật ký quan sát, đặt mục tiêu tuần — không gây áp lực."
+            title="Kết nối Mentor"
+            description="Phụ huynh, gia sư, thầy cô có dashboard riêng để theo dõi học sinh, ghi nhật ký quan sát, đặt mục tiêu tuần — không gây áp lực."
           />
         </div>
       </section>

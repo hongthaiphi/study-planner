@@ -68,8 +68,8 @@ export default async function DashboardPage() {
   if (!profile) redirect("/login");
   const user = profile as User;
 
-  if (user.role === "parent") {
-    return <ParentDashboard supabase={supabase} userId={user.id} />;
+  if (user.role === "mentor" || (user.role as string) === "parent") {
+    return <MentorDashboard supabase={supabase} userId={user.id} />;
   }
 
   const { projects, primaryProject, gameStats, quests, userTopics, allTopics } = await getStudentDashboardData(supabase, user.id);
@@ -174,7 +174,7 @@ export default async function DashboardPage() {
   );
 }
 
-async function ParentDashboard({ supabase, userId }: { supabase: any; userId: string }) {
+async function MentorDashboard({ supabase, userId }: { supabase: any; userId: string }) {
   const { data: familyMembers } = await supabase
     .from("family_members")
     .select("*, user:users(*)")
@@ -188,7 +188,7 @@ async function ParentDashboard({ supabase, userId }: { supabase: any; userId: st
       .from("family_members")
       .select("*, user:users(*)")
       .eq("family_id", familyId)
-      .eq("role_in_family", "child");
+      .eq("role_in_family", "member");
     children = (allMembers ?? []).map((m: any) => m.user).filter(Boolean);
   }
 
@@ -204,18 +204,18 @@ async function ParentDashboard({ supabase, userId }: { supabase: any; userId: st
     <div className="space-y-5">
       <div>
         <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">
-          Dashboard Phụ huynh
+          Dashboard Mentor
         </h1>
-        <p className="mt-1 text-[13px] text-slate-500 font-medium">{weather.emoji} Theo dõi lộ trình con & project cá nhân</p>
+        <p className="mt-1 text-[13px] text-slate-500 font-medium">{weather.emoji} Theo dõi lộ trình học sinh & project cá nhân</p>
       </div>
 
       <div className="rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm shadow-slate-200/50">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-base">👨‍👩‍👧‍👦</span>
-          <h2 className="text-[15px] font-bold tracking-tight text-slate-900">Con của bạn</h2>
+          <h2 className="text-[15px] font-bold tracking-tight text-slate-900">Học sinh của bạn</h2>
         </div>
         {children.length === 0 ? (
-          <p className="text-[13px] text-slate-400">Chưa liên kết với con nào</p>
+          <p className="text-[13px] text-slate-400">Chưa liên kết với học sinh nào</p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {children.map((child: User) => (

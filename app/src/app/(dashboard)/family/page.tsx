@@ -3,41 +3,41 @@ import { redirect } from "next/navigation";
 import { getWeatherFromStreak, getLevelTitle } from "@/lib/types";
 import type { User, UserGameStats } from "@/lib/types";
 
-export default async function FamilyPage() {
+export default async function GroupPage() {
   const supabase = await createClient();
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/login");
 
-  const { data: myFamilyMember } = await supabase
+  const { data: myMembership } = await supabase
     .from("family_members")
     .select("family_id")
     .eq("user_id", authUser.id)
     .single();
 
-  if (!myFamilyMember) {
+  if (!myMembership) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">👨‍👩‍👧‍👦 Gia đình</h1>
-        <p className="text-sm text-gray-500">Chưa tham gia nhóm gia đình nào</p>
+        <h1 className="text-2xl font-bold text-gray-900">👥 Nhóm</h1>
+        <p className="text-sm text-gray-500">Chưa tham gia nhóm nào</p>
       </div>
     );
   }
 
-  const { data: family } = await supabase
+  const { data: group } = await supabase
     .from("families")
     .select("*")
-    .eq("id", myFamilyMember.family_id)
+    .eq("id", myMembership.family_id)
     .single();
 
   const { data: members } = await supabase
     .from("family_members")
     .select("*, user:users(*)")
-    .eq("family_id", myFamilyMember.family_id);
+    .eq("family_id", myMembership.family_id);
 
   const memberUsers = (members ?? []).map((m: any) => ({
     ...m.user,
-    role_in_family: m.role_in_family,
-  })) as (User & { role_in_family: string })[];
+    role_in_group: m.role_in_family,
+  })) as (User & { role_in_group: string })[];
 
   const userIds = memberUsers.map((u) => u.id);
 
@@ -62,20 +62,18 @@ export default async function FamilyPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">👨‍👩‍👧‍👦 {family?.name ?? "Gia đình"}</h1>
+      <h1 className="text-2xl font-bold text-gray-900">👥 {group?.name ?? "Nhóm"}</h1>
 
-      {/* Family Streak */}
       <div className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white">
-        <p className="text-sm font-medium opacity-80">Streak gia đình</p>
+        <p className="text-sm font-medium opacity-80">Streak nhóm</p>
         <p className="text-3xl font-bold mt-1">{totalStreak} ngày tổng cộng</p>
         <p className="mt-2 text-sm opacity-90">
           {allActive
-            ? "Cả nhà đều đang nỗ lực! 🎉"
+            ? "Cả nhóm đều đang nỗ lực! 🎉"
             : "Có thành viên đang nghỉ — cũng cần phục hồi 💪"}
         </p>
       </div>
 
-      {/* Members */}
       <div className="grid gap-4 sm:grid-cols-2">
         {memberUsers.map((member) => {
           const gs = gameStatsMap.get(member.id);
@@ -91,7 +89,7 @@ export default async function FamilyPage() {
                 <div>
                   <h3 className="text-base font-semibold text-gray-900">{member.name}</h3>
                   <p className="text-xs text-gray-500">
-                    {member.role_in_family === "parent" ? "Phụ huynh" : "Học sinh"}
+                    {member.role_in_group === "parent" || member.role_in_group === "mentor" ? "Mentor" : "Học sinh"}
                   </p>
                 </div>
               </div>

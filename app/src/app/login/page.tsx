@@ -101,8 +101,8 @@ export default function LoginPage() {
           <div className="grid grid-cols-2 gap-1.5 text-[11px] text-white/40">
             <div><span className="font-medium text-white/60">HS1:</span> hs1@studyplanner.dev</div>
             <div><span className="font-medium text-white/60">HS2:</span> hs2@studyplanner.dev</div>
-            <div><span className="font-medium text-white/60">PH1:</span> ph1@studyplanner.dev</div>
-            <div><span className="font-medium text-white/60">PH2:</span> ph2@studyplanner.dev</div>
+            <div><span className="font-medium text-white/60">MT1:</span> ph1@studyplanner.dev</div>
+            <div><span className="font-medium text-white/60">MT2:</span> ph2@studyplanner.dev</div>
           </div>
         </div>
       </div>

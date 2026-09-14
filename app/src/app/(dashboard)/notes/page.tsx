@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 
 interface Note {
   id: string;
-  parent_id: string;
+  mentor_id: string;
   student_id: string;
   date: string;
   content: string;
@@ -39,7 +39,7 @@ export default function NotesPage() {
         .from("family_members")
         .select("*, user:users(id, name)")
         .eq("family_id", fm.family_id)
-        .eq("role_in_family", "child");
+        .in("role_in_family", ["child", "member"]);
 
       const kids = (members ?? []).map((m: any) => m.user).filter(Boolean);
       setChildren(kids);

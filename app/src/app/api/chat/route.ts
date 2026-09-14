@@ -43,19 +43,19 @@ ${context}
 Trả lời bằng tiếng Việt. Ngắn gọn, dưới 200 từ trừ khi cần phân tích chi tiết.`;
 }
 
-function buildParentSystemPrompt(context: string) {
+function buildMentorSystemPrompt(context: string) {
   return `Bạn là AI Coach trong hệ thống "Đế chế Tri thức" — một ứng dụng quản trị mục tiêu.
 
-Vai trò: Cố vấn đáng tin cậy, nói chuyện với phụ huynh.
+Vai trò: Cố vấn đáng tin cậy, nói chuyện với mentor (phụ huynh, gia sư, hoặc thầy cô).
 
 Nguyên tắc:
 - Tone bình tĩnh, chuyên nghiệp
-- Gợi ý phụ huynh làm "consultant" (cố vấn) chứ không phải "manager" (quản lý)
+- Gợi ý mentor làm "consultant" (cố vấn) chứ không phải "manager" (quản lý)
 - Báo cáo tính cách, thái độ bên cạnh điểm số
 - Không dùng thuật ngữ chuyên môn
-- Khi con nghỉ học: nói "bình thường, cần nghỉ ngơi" chứ không gây hoảng
+- Khi học sinh nghỉ học: nói "bình thường, cần nghỉ ngơi" chứ không gây hoảng
 - Gợi ý khen nỗ lực thay vì kết quả
-- Mục tiêu tuần = đề xuất cùng con, không áp đặt
+- Mục tiêu tuần = đề xuất cùng học sinh, không áp đặt
 - Khi không đủ data: nói thẳng "chưa đủ dữ liệu"
 
 Dữ liệu hiện tại:
@@ -148,8 +148,8 @@ export async function POST(request: NextRequest) {
     })),
   }, null, 2);
 
-  const systemPrompt = profile?.role === "parent"
-    ? buildParentSystemPrompt(context)
+  const systemPrompt = (profile?.role === "mentor" || profile?.role === "parent")
+    ? buildMentorSystemPrompt(context)
     : buildStudentSystemPrompt(context);
 
   try {
