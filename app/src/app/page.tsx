@@ -17,16 +17,22 @@ export default function LandingPage() {
           </div>
           <span className="text-[15px] font-bold tracking-tight">StudyPlanner</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link
             href="/help/student"
-            className="text-[13px] font-medium text-slate-400 hover:text-white transition-colors"
+            className="hidden sm:inline text-[13px] font-medium text-slate-400 hover:text-white transition-colors"
           >
             Hướng dẫn
           </Link>
           <Link
+            href="/help/student"
+            className="sm:hidden text-[12px] font-medium text-slate-400 hover:text-white transition-colors"
+          >
+            Help
+          </Link>
+          <Link
             href="/login"
-            className="rounded-xl bg-white/10 px-5 py-2 text-[13px] font-semibold backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all"
+            className="rounded-xl bg-white/10 px-4 py-2 text-[13px] font-semibold backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all"
           >
             Đăng nhập
           </Link>
