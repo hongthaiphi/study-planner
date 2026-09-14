@@ -1,6 +1,17 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
+async function verifyTopicOwnership(supabase: Awaited<ReturnType<typeof createClient>>, topicId: string, userId: string) {
+  const { data } = await supabase
+    .from("topics")
+    .select("id, project:projects!inner(user_id)")
+    .eq("id", topicId)
+    .single();
+  if (!data) return false;
+  const project = data.project as unknown as { user_id: string };
+  return project.user_id === userId;
+}
+
 export async function PATCH(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -8,6 +19,10 @@ export async function PATCH(req: NextRequest) {
 
   const { id, name, group, weight } = await req.json();
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+
+  if (!await verifyTopicOwnership(supabase, id, user.id)) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
 
   const updates: Record<string, unknown> = {};
   if (name !== undefined) updates.name = name;
@@ -32,6 +47,10 @@ export async function DELETE(req: NextRequest) {
 
   const { id } = await req.json();
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+
+  if (!await verifyTopicOwnership(supabase, id, user.id)) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
 
   await supabase.from("user_topics").delete().eq("topic_id", id);
   const { error } = await supabase.from("topics").delete().eq("id", id);

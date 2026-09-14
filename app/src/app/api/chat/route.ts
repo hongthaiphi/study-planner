@@ -4,6 +4,25 @@ import { NextRequest } from "next/server";
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY ?? "";
 const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL ?? "https://api.deepseek.com";
 
+const MAX_MESSAGES = 20;
+const MAX_MESSAGE_LENGTH = 2000;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 10;
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(userId: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(userId);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(userId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return false;
+  entry.count++;
+  return true;
+}
+
 function buildStudentSystemPrompt(context: string) {
   return `Bạn là AI Coach trong hệ thống "Đế chế Tri thức" — một ứng dụng game hoá lộ trình học tập.
 
@@ -52,11 +71,32 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (!checkRateLimit(user.id)) {
+    return Response.json({ error: "Quá nhiều yêu cầu. Vui lòng thử lại sau 1 phút." }, { status: 429 });
+  }
+
   if (!DEEPSEEK_API_KEY) {
     return Response.json({ error: "DEEPSEEK_API_KEY chưa được cấu hình" }, { status: 500 });
   }
 
   const { messages } = await request.json();
+
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return Response.json({ error: "messages[] required" }, { status: 400 });
+  }
+
+  if (messages.length > MAX_MESSAGES) {
+    return Response.json({ error: `Tối đa ${MAX_MESSAGES} messages` }, { status: 400 });
+  }
+
+  for (const m of messages) {
+    if (typeof m.content !== "string" || m.content.length > MAX_MESSAGE_LENGTH) {
+      return Response.json({ error: `Mỗi message tối đa ${MAX_MESSAGE_LENGTH} ký tự` }, { status: 400 });
+    }
+    if (!["user", "assistant"].includes(m.role)) {
+      return Response.json({ error: "role phải là 'user' hoặc 'assistant'" }, { status: 400 });
+    }
+  }
 
   const { data: profile } = await supabase
     .from("users")
