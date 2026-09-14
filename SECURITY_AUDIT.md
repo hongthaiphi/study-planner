@@ -67,6 +67,41 @@
 
 ---
 
+## 6. Middleware redirect API routes (TRUNG BINH)
+
+**File:** `lib/supabase/middleware.ts:44-53`
+
+**Van de:** Middleware redirect tat ca unauthenticated requests (ke ca `/api/*`) sang `/login`. API routes da tu handle auth (tra 401), nen middleware redirect gay ra 405 Method Not Allowed cho API calls.
+
+**Fix:** Them `!request.nextUrl.pathname.startsWith("/api/")` vao dieu kien redirect.
+
+**Status:** DA FIX
+
+---
+
+## Kiem tra tren Production (2026-09-14)
+
+**URL:** https://project-tracking-log.vercel.app/
+
+| Hang muc | Ket qua |
+|---|---|
+| Security Headers | X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, X-DNS-Prefetch-Control — OK |
+| API auth (khong login) | Tat ca tra 401 Unauthorized — OK |
+| IDOR Topics | Fake ID tra 404 — OK |
+| IDOR Milestones | Fake ID tra 404 — OK |
+| Open Redirect | `//evil.com`, `https://evil.com` deu ve `/login` — OK |
+| Message qua dai (2500 chars) | 400 reject — OK |
+| Qua nhieu messages (25) | 400 reject — OK |
+| Invalid role (system) | 400 reject — OK |
+| Rate limiting | 429 sau 10 req/min — OK |
+
+**Luu y:**
+- `access-control-allow-origin: *` do Vercel tu them, khong nguy hiem (cookie-based auth)
+- HSTS duoc Vercel xu ly o edge level
+- Chua co CSP header — can than trong voi Three.js + inline styles
+
+---
+
 ## Ket qua tot (khong co loi)
 
 - Supabase client dung `anon_key`, `service_role_key` khong xuat hien trong source
