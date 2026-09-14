@@ -46,9 +46,15 @@ export default function MentorHelpPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-8">
         <div className="text-center space-y-3">
-          <Link href="/dashboard" className="text-[13px] text-emerald-600 hover:underline">
-            ← Quay về Dashboard
-          </Link>
+          <div className="flex items-center justify-center gap-4 text-[13px]">
+            <Link href="/" className="text-slate-500 hover:underline">
+              Trang chủ
+            </Link>
+            <span className="text-slate-300">|</span>
+            <Link href="/dashboard" className="text-emerald-600 hover:underline">
+              Dashboard
+            </Link>
+          </div>
           <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-slate-900 via-emerald-900 to-emerald-700 bg-clip-text text-transparent">
             Hướng dẫn sử dụng — Mentor
           </h1>

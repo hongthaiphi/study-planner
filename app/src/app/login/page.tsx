@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -104,6 +105,16 @@ export default function LoginPage() {
             <div><span className="font-medium text-white/60">MT1:</span> ph1@studyplanner.dev</div>
             <div><span className="font-medium text-white/60">MT2:</span> ph2@studyplanner.dev</div>
           </div>
+        </div>
+
+        <div className="flex items-center justify-center gap-4 text-[12px]">
+          <Link href="/" className="text-indigo-300/50 hover:text-white transition-colors">
+            Trang chủ
+          </Link>
+          <span className="text-white/10">|</span>
+          <Link href="/help/student" className="text-indigo-300/50 hover:text-white transition-colors">
+            Hướng dẫn
+          </Link>
         </div>
       </div>
     </div>
