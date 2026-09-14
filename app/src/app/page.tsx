@@ -17,12 +17,20 @@ export default function LandingPage() {
           </div>
           <span className="text-[15px] font-bold tracking-tight">StudyPlanner</span>
         </div>
-        <Link
-          href="/login"
-          className="rounded-xl bg-white/10 px-5 py-2 text-[13px] font-semibold backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all"
-        >
-          Đăng nhập
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/help/student"
+            className="text-[13px] font-medium text-slate-400 hover:text-white transition-colors"
+          >
+            Hướng dẫn
+          </Link>
+          <Link
+            href="/login"
+            className="rounded-xl bg-white/10 px-5 py-2 text-[13px] font-semibold backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all"
+          >
+            Đăng nhập
+          </Link>
+        </div>
       </nav>
 
       {/* Hero */}
@@ -174,16 +182,73 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-white/5 py-8">
-        <div className="max-w-4xl mx-auto px-6 flex items-center justify-between text-[12px] text-slate-500">
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 text-[10px] font-bold">
-              S
+      {/* About & Footer */}
+      <footer className="relative z-10 border-t border-white/5 pt-12 pb-8">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="grid sm:grid-cols-3 gap-8 mb-10">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 text-[11px] font-bold">
+                  S
+                </div>
+                <span className="text-[14px] font-bold">StudyPlanner</span>
+              </div>
+              <p className="text-[12px] text-slate-400 leading-relaxed">
+                {"Ứng dụng game hoá lộ trình học tập — giúp học sinh tự quản lý mục tiêu và mentor đồng hành hiệu quả."}
+              </p>
             </div>
-            <span className="font-semibold">StudyPlanner</span>
+
+            <div>
+              <h3 className="text-[13px] font-bold mb-3">{"Hướng dẫn"}</h3>
+              <ul className="space-y-2 text-[12px] text-slate-400">
+                <li>
+                  <Link href="/help/student" className="hover:text-white transition-colors">
+                    {"Hướng dẫn cho Học sinh"}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/help/mentor" className="hover:text-white transition-colors">
+                    {"Hướng dẫn cho Mentor"}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/login" className="hover:text-white transition-colors">
+                    {"Đăng nhập / Đăng ký"}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-[13px] font-bold mb-3">{"Liên hệ & Hỗ trợ"}</h3>
+              <ul className="space-y-2 text-[12px] text-slate-400">
+                <li className="flex items-center gap-2">
+                  <span className="text-slate-500">Dev:</span>
+                  <span className="text-slate-300 font-medium">Phi Hong Thai</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-slate-500">Email:</span>
+                  <a href="mailto:phihongthai.it@gmail.com" className="hover:text-white transition-colors">
+                    phihongthai.it@gmail.com
+                  </a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-slate-500">Facebook:</span>
+                  <a href="https://facebook.com/phi.thai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                    fb.com/phi.thai
+                  </a>
+                </li>
+              </ul>
+              <p className="mt-3 text-[11px] text-slate-500 leading-relaxed">
+                {"Gửi feedback, báo lỗi, hoặc yêu cầu tính năng qua email hoặc Facebook."}
+              </p>
+            </div>
           </div>
-          <p>Built with Next.js, Supabase & Three.js</p>
+
+          <div className="border-t border-white/5 pt-5 flex items-center justify-between text-[11px] text-slate-600">
+            <p>© 2026 StudyPlanner. Built with Next.js, Supabase & Three.js</p>
+            <p>Made with purpose by Phi Hong Thai</p>
+          </div>
         </div>
       </footer>
     </div>
