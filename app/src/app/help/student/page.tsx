@@ -300,7 +300,6 @@ export default function StudentHelpPage() {
               "Giọng thân thiện, dùng ngôn ngữ game (thành trì, nhiệm vụ, lãnh thổ).",
             ]}
           />
-        </div>
 
           <ScreenGuide
             icon="🔍"

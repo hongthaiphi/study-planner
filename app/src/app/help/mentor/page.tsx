@@ -358,7 +358,6 @@ export default function MentorHelpPage() {
               "Khi cả nhóm đều có streak ≥ 3 ngày, hiện thông báo chúc mừng.",
             ]}
           />
-        </div>
 
           <ScreenGuide
             icon="👤"
