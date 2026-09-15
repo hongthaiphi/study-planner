@@ -302,6 +302,46 @@ export default function StudentHelpPage() {
           />
         </div>
 
+          <ScreenGuide
+            icon="🔍"
+            title="Tìm Mentor"
+            path="/mentors"
+            mockup={
+              <div className="space-y-3">
+                <p className="text-[14px] font-bold text-slate-800">Tìm Mentor phù hợp</p>
+                <div className="flex gap-2">
+                  <input className="flex-1 border rounded-lg px-3 py-2 text-[11px] text-slate-400" placeholder="Tìm theo tên hoặc môn..." readOnly />
+                  <span className="bg-indigo-600 text-white rounded-lg px-3 py-2 text-[11px]">Tìm</span>
+                </div>
+                <div className="flex gap-1.5 flex-wrap">
+                  {["Tất cả", "Phụ huynh", "Gia sư", "Thầy/Cô"].map((r) => (
+                    <span key={r} className="text-[10px] border rounded-lg px-2 py-1">{r}</span>
+                  ))}
+                  <span className="text-slate-300">|</span>
+                  {["Toán", "Lý", "Hoá"].map((s) => (
+                    <span key={s} className="text-[10px] border rounded-lg px-2 py-1">{s}</span>
+                  ))}
+                </div>
+                <div className="border rounded-lg p-3 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">A</div>
+                  <div>
+                    <p className="text-[12px] font-bold">Anh Tuấn</p>
+                    <p className="text-[10px] text-emerald-600">Gia sư · Toán, Lý, Hoá</p>
+                  </div>
+                  <span className="ml-auto text-[10px] text-indigo-600">Xem →</span>
+                </div>
+              </div>
+            }
+            steps={[
+              "Vào menu \"Tìm Mentor\" trên sidebar hoặc truy cập /mentors.",
+              "Tìm kiếm theo tên hoặc môn học. Lọc theo vai trò (Phụ huynh, Gia sư, Thầy/Cô).",
+              "Nhấn vào mentor để xem profile chi tiết: giới thiệu, môn giảng dạy, kinh nghiệm.",
+              "Nhấn \"Gửi yêu cầu kết nối\" — có thể kèm tin nhắn giới thiệu bản thân.",
+              "Khi mentor chấp nhận, bạn sẽ xuất hiện trong nhóm của mentor — mentor có thể theo dõi tiến bộ và đặt mục tiêu tuần cho bạn.",
+            ]}
+          />
+        </div>
+
         <div className="text-center pt-4 pb-8">
           <Link href="/help/mentor" className="text-[13px] text-indigo-600 hover:underline font-medium">
             Xem hướng dẫn cho Mentor →

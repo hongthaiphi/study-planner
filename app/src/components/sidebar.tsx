@@ -13,6 +13,7 @@ const studentNav = [
   { href: "/log", label: "Log", icon: "edit" },
   { href: "/progress", label: "Tiến bộ", icon: "chart" },
   { href: "/coach", label: "Coach", icon: "bot" },
+  { href: "/mentors", label: "Tìm Mentor", icon: "search" },
 ];
 
 const mentorNav = [
@@ -23,6 +24,8 @@ const mentorNav = [
   { href: "/coach", label: "Coach", icon: "bot" },
   { href: "/my-projects", label: "Project", icon: "user" },
   { href: "/family", label: "Nhóm", icon: "users" },
+  { href: "/requests", label: "Yêu cầu", icon: "inbox" },
+  { href: "/profile", label: "Profile", icon: "profile" },
 ];
 
 function NavIcon({ name, className }: { name: string; className?: string }) {
@@ -71,6 +74,21 @@ function NavIcon({ name, className }: { name: string; className?: string }) {
     users: (
       <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" />
+      </svg>
+    ),
+    inbox: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z" />
+      </svg>
+    ),
+    search: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+    ),
+    profile: (
+      <svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /><path d="M16 3.13a4 4 0 010 7.75" />
       </svg>
     ),
     help: (

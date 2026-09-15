@@ -8,6 +8,7 @@ export type QuestTier = "normal" | "challenge" | "epic" | "royal";
 export type QuestSource = "ai" | "mentor" | "system";
 export type BuildingType = "library" | "training" | "tower" | "forge";
 export type MilestoneStatus = "pending" | "completed" | "skipped";
+export type MentorRoleType = "parent" | "tutor" | "teacher";
 
 export interface User {
   id: string;
@@ -154,6 +155,34 @@ export interface Achievement {
   title: string;
   description: string | null;
   earned_at: string;
+}
+
+export interface MentorProfile {
+  id: string;
+  bio: string | null;
+  subjects: string[];
+  experience: string | null;
+  role_type: MentorRoleType;
+  is_public: boolean;
+  max_students: number;
+  avatar_url: string | null;
+  created_at: string;
+  updated_at: string;
+  user?: User;
+}
+
+export type ConnectionStatus = "pending" | "accepted" | "rejected";
+
+export interface ConnectionRequest {
+  id: string;
+  student_id: string;
+  mentor_id: string;
+  message: string | null;
+  status: ConnectionStatus;
+  created_at: string;
+  updated_at: string;
+  student?: User;
+  mentor?: User;
 }
 
 export interface AiReport {

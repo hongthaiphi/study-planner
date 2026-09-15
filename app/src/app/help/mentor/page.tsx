@@ -59,7 +59,7 @@ export default function MentorHelpPage() {
             Hướng dẫn sử dụng — Mentor
           </h1>
           <p className="text-[14px] text-slate-500 max-w-lg mx-auto">
-            Dành cho phụ huynh, gia sư, thầy cô — đồng hành cùng học sinh qua 7 màn hình
+            Dành cho phụ huynh, gia sư, thầy cô — đồng hành cùng học sinh qua 9 màn hình
           </p>
         </div>
 
@@ -356,6 +356,94 @@ export default function MentorHelpPage() {
               "Mỗi thẻ thành viên hiện Level, Streak, XP — so sánh tích cực, không xếp hạng.",
               "Để thêm học sinh: học sinh đăng ký tài khoản → bạn mời vào nhóm bằng email.",
               "Khi cả nhóm đều có streak ≥ 3 ngày, hiện thông báo chúc mừng.",
+            ]}
+          />
+        </div>
+
+          <ScreenGuide
+            icon="👤"
+            title="Mentor Profile"
+            path="/profile"
+            mockup={
+              <div className="space-y-3">
+                <p className="text-[14px] font-bold text-slate-800">Mentor Profile</p>
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-[10px] text-slate-500 mb-1">Vai trò</p>
+                    <div className="flex gap-1.5 text-[10px]">
+                      {["Phụ huynh", "Gia sư", "Thầy/Cô"].map((r, i) => (
+                        <span key={r} className={`rounded-lg px-2.5 py-1 ${i === 1 ? "bg-indigo-600 text-white" : "border text-slate-500"}`}>{r}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-500 mb-1">Giới thiệu</p>
+                    <div className="border rounded-lg p-2 text-[11px] text-slate-600">Gia sư Toán-Lý-Hoá 5 năm kinh nghiệm...</div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-500 mb-1">Môn giảng dạy</p>
+                    <div className="flex gap-1 flex-wrap">
+                      {["Toán", "Lý", "Hoá"].map((s) => (
+                        <span key={s} className="text-[10px] bg-emerald-100 text-emerald-700 rounded px-2 py-0.5">{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-[10px] text-slate-500">Công khai profile</p>
+                    </div>
+                    <div className="w-8 h-4 rounded-full bg-emerald-500 relative"><div className="w-3 h-3 bg-white rounded-full absolute right-0.5 top-0.5"></div></div>
+                  </div>
+                </div>
+                <span className="block text-center bg-emerald-600 text-white rounded-lg px-3 py-2 text-[11px] font-semibold">Lưu Profile</span>
+              </div>
+            }
+            steps={[
+              "Vào \"Profile\" trên sidebar để tạo/chỉnh sửa hồ sơ mentor.",
+              "Chọn vai trò: Phụ huynh, Gia sư, hoặc Thầy/Cô giáo.",
+              "Viết giới thiệu ngắn (tối đa 500 ký tự) và kinh nghiệm (tối đa 200 ký tự).",
+              "Thêm môn giảng dạy — nhấn Enter hoặc chọn từ gợi ý (Toán, Lý, Hoá, Anh, Văn...).",
+              "Bật \"Công khai\" để profile hiển thị trên trang Tìm Mentor — học sinh mới có thể tìm thấy bạn.",
+              "Đặt số học sinh tối đa bạn muốn nhận (1-20).",
+            ]}
+          />
+
+          <ScreenGuide
+            icon="📬"
+            title="Yêu cầu kết nối"
+            path="/requests"
+            mockup={
+              <div className="space-y-3">
+                <p className="text-[14px] font-bold text-slate-800">Yêu cầu kết nối</p>
+                <div className="border border-amber-200 bg-amber-50/50 rounded-xl p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold">M</div>
+                    <div>
+                      <p className="text-[12px] font-bold text-slate-800">Minh Khôi</p>
+                      <p className="text-[9px] text-slate-500">hs1@studyplanner.dev</p>
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-slate-600 bg-white rounded-lg p-2 mb-2 border">&ldquo;Em muốn được anh hướng dẫn ôn thi...&rdquo;</p>
+                  <div className="flex gap-2">
+                    <span className="flex-1 text-center bg-emerald-600 text-white rounded-lg py-1.5 text-[11px] font-semibold">Chấp nhận</span>
+                    <span className="flex-1 text-center border rounded-lg py-1.5 text-[11px] text-slate-600">Từ chối</span>
+                  </div>
+                </div>
+                <div className="border rounded-xl p-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[8px] font-bold text-slate-600">B</div>
+                    <p className="text-[11px] text-slate-700">Bảo Ngọc</p>
+                  </div>
+                  <span className="text-[9px] bg-emerald-100 text-emerald-700 rounded-full px-2 py-0.5">Đã chấp nhận</span>
+                </div>
+              </div>
+            }
+            steps={[
+              "Khi học sinh gửi yêu cầu kết nối, bạn sẽ thấy trong trang \"Yêu cầu\".",
+              "Mỗi yêu cầu hiện tên, email, và tin nhắn giới thiệu của học sinh.",
+              "Nhấn \"Chấp nhận\" → học sinh tự động được thêm vào nhóm của bạn.",
+              "Nhấn \"Từ chối\" → học sinh nhận thông báo — họ có thể gửi lại sau.",
+              "Phía dưới là danh sách yêu cầu đã xử lý (đã chấp nhận / đã từ chối).",
             ]}
           />
         </div>
