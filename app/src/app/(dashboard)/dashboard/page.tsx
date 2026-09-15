@@ -188,7 +188,7 @@ async function MentorDashboard({ supabase, userId }: { supabase: any; userId: st
       .from("family_members")
       .select("*, user:users(*)")
       .eq("family_id", familyId)
-      .eq("role_in_family", "member");
+      .in("role_in_family", ["child", "member"]);
     children = (allMembers ?? []).map((m: any) => m.user).filter(Boolean);
   }
 
