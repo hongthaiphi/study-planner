@@ -115,7 +115,7 @@ function NavIcon({ name, className }: { name: string; className?: string }) {
   return icons[name] ?? null;
 }
 
-export function Sidebar({ user }: { user: User }) {
+export function Sidebar({ user, pendingRequests = 0 }: { user: User; pendingRequests?: number }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -171,6 +171,11 @@ export function Sidebar({ user }: { user: User }) {
                     <NavIcon name={item.icon} />
                   </span>
                   {item.label}
+                  {item.href === "/requests" && pendingRequests > 0 && (
+                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                      {pendingRequests}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -251,6 +256,11 @@ export function Sidebar({ user }: { user: User }) {
                   <NavIcon name={item.icon} />
                 </span>
                 {item.label}
+                {item.href === "/requests" && pendingRequests > 0 && (
+                  <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                    {pendingRequests}
+                  </span>
+                )}
               </Link>
             );
           })}
