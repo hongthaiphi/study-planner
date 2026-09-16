@@ -213,6 +213,7 @@ export default function LoginPage() {
             Hướng dẫn
           </Link>
         </div>
+        <p className="text-center text-[10px] text-white/20">v1.1.0</p>
       </div>
     </div>
   );

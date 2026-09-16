@@ -252,7 +252,7 @@ export default function LandingPage() {
           </div>
 
           <div className="border-t border-white/5 pt-5 flex items-center justify-between text-[11px] text-slate-600">
-            <p>© 2026 StudyPlanner. Built with Next.js, Supabase & Three.js</p>
+            <p>© 2026 StudyPlanner v1.1.0 · Built with Next.js, Supabase & Three.js</p>
             <p>Made with purpose by Phi Hong Thai</p>
           </div>
         </div>
