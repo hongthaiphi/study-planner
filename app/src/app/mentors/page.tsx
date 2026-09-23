@@ -16,6 +16,8 @@ export default async function MentorsPage({
 }) {
   const params = await searchParams;
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
 
   let query = supabase
     .from("mentor_profiles")
@@ -58,9 +60,15 @@ export default async function MentorsPage({
           <Link href="/help/student" className="hidden sm:inline text-[13px] font-medium text-slate-400 hover:text-white transition-colors">
             Hướng dẫn
           </Link>
-          <Link href="/login" className="rounded-xl bg-white/10 px-4 py-2 text-[13px] font-semibold backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all">
-            Đăng nhập
-          </Link>
+          {isLoggedIn ? (
+            <Link href="/dashboard" className="rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-[13px] font-semibold shadow-lg shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 transition-all ring-1 ring-white/10">
+              Vào Dashboard
+            </Link>
+          ) : (
+            <Link href="/login" className="rounded-xl bg-white/10 px-4 py-2 text-[13px] font-semibold backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all">
+              Đăng nhập
+            </Link>
+          )}
         </div>
       </nav>
 
