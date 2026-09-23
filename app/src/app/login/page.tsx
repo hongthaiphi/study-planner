@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
@@ -9,6 +9,13 @@ type Role = "student" | "mentor";
 
 export default function LoginPage() {
   const [tab, setTab] = useState<Tab>("login");
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) window.location.href = "/dashboard";
+    });
+  }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");

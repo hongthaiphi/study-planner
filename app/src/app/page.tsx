@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white relative overflow-hidden">
       {/* Background effects */}
@@ -30,12 +34,21 @@ export default function LandingPage() {
           >
             Help
           </Link>
-          <Link
-            href="/login"
-            className="rounded-xl bg-white/10 px-4 py-2 text-[13px] font-semibold backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all"
-          >
-            Đăng nhập
-          </Link>
+          {isLoggedIn ? (
+            <Link
+              href="/dashboard"
+              className="rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-[13px] font-semibold shadow-lg shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 transition-all ring-1 ring-white/10"
+            >
+              Vào Dashboard
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-xl bg-white/10 px-4 py-2 text-[13px] font-semibold backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all"
+            >
+              Đăng nhập
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -61,10 +74,10 @@ export default function LandingPage() {
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            href="/login"
+            href={isLoggedIn ? "/dashboard" : "/login"}
             className="rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-4 text-[15px] font-bold shadow-xl shadow-indigo-500/25 hover:from-indigo-500 hover:to-purple-500 transition-all ring-1 ring-white/10"
           >
-            Bắt đầu miễn phí
+            {isLoggedIn ? "Vào Dashboard" : "Bắt đầu miễn phí"}
           </Link>
           <a
             href="#why"
@@ -174,16 +187,16 @@ export default function LandingPage() {
       <section className="relative z-10 max-w-3xl mx-auto px-6 pb-24 text-center">
         <div className="rounded-3xl bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-white/10 p-10 backdrop-blur-sm">
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
-            Sẵn sàng chinh phục đế chế tri thức?
+            {isLoggedIn ? "Quay lại đế chế của bạn" : "Sẵn sàng chinh phục đế chế tri thức?"}
           </h2>
           <p className="mt-3 text-slate-400">
-            Miễn phí. Không cần thẻ tín dụng. Bắt đầu trong 30 giây.
+            {isLoggedIn ? "Dashboard đang chờ bạn." : "Miễn phí. Không cần thẻ tín dụng. Bắt đầu trong 30 giây."}
           </p>
           <Link
-            href="/login"
+            href={isLoggedIn ? "/dashboard" : "/login"}
             className="mt-8 inline-block rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 px-10 py-4 text-[15px] font-bold shadow-xl shadow-indigo-500/25 hover:from-indigo-500 hover:to-purple-500 transition-all ring-1 ring-white/10"
           >
-            Bắt đầu ngay
+            {isLoggedIn ? "Vào Dashboard" : "Bắt đầu ngay"}
           </Link>
         </div>
       </section>
