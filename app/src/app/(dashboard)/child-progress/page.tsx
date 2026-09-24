@@ -62,7 +62,8 @@ export default function ChildProgressPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">📊 Tiến bộ học sinh</h1>
+      <h1 className="text-2xl font-bold text-gray-900">Học sinh</h1>
+      <p className="text-sm text-gray-500 -mt-4">Theo dõi hoạt động và tiến bộ của học sinh</p>
 
       {children.length > 1 && (
         <div className="flex gap-2">

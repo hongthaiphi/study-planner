@@ -22,19 +22,9 @@ export default async function DashboardLayout({
 
   if (!profile) redirect("/login");
 
-  let pendingRequests = 0;
-  if (profile.role === "mentor" || profile.role === "parent") {
-    const { count } = await supabase
-      .from("connection_requests")
-      .select("*", { count: "exact", head: true })
-      .eq("mentor_id", authUser.id)
-      .eq("status", "pending");
-    pendingRequests = count ?? 0;
-  }
-
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar user={profile} pendingRequests={pendingRequests} />
+      <Sidebar user={profile} />
       <main className="flex-1 overflow-y-auto bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 px-4 py-4 md:px-6 md:py-5 pt-[64px] pb-[72px] md:pt-5 md:pb-5">
         {children}
       </main>

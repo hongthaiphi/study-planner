@@ -204,9 +204,9 @@ async function MentorDashboard({ supabase, userId }: { supabase: any; userId: st
     <div className="space-y-5">
       <div>
         <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-indigo-700 bg-clip-text text-transparent">
-          Dashboard Mentor
+          Dashboard
         </h1>
-        <p className="mt-1 text-[13px] text-slate-500 font-medium">{weather.emoji} Theo dõi lộ trình học sinh & project cá nhân</p>
+        <p className="mt-1 text-[13px] text-slate-500 font-medium">{weather.emoji} Theo dõi lộ trình học sinh</p>
       </div>
 
       <div className="rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm shadow-slate-200/50">

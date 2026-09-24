@@ -13,23 +13,16 @@ const studentNav = [
   { href: "/log", label: "Log", icon: "edit" },
   { href: "/progress", label: "Tiến bộ", icon: "chart" },
   { href: "/coach", label: "Coach", icon: "bot" },
-  { href: "/mentors", label: "Tìm Mentor", icon: "search" },
 ];
 
 const mentorNav = [
-  { href: "/dashboard", label: "Dashboard", icon: "castle", group: "mentor" },
-  { href: "/weekly-goals", label: "Mục tiêu HS", icon: "target", group: "mentor" },
-  { href: "/notes", label: "Nhật ký HS", icon: "clipboard", group: "mentor" },
-  { href: "/child-progress", label: "Tiến bộ HS", icon: "chart", group: "mentor" },
-  { href: "/roadmap", label: "Lộ trình", icon: "map", group: "personal" },
-  { href: "/log", label: "Log học tập", icon: "edit", group: "personal" },
-  { href: "/progress", label: "Tiến bộ", icon: "chart", group: "personal" },
-  { href: "/coach", label: "Coach", icon: "bot", group: "personal" },
-  { href: "/my-projects", label: "Project", icon: "user", group: "personal" },
-  { href: "/mentors", label: "Tìm Mentor", icon: "search", group: "personal" },
-  { href: "/family", label: "Nhóm", icon: "users", group: "manage" },
-  { href: "/requests", label: "Yêu cầu", icon: "inbox", group: "manage" },
-  { href: "/profile", label: "Profile", icon: "profile", group: "manage" },
+  { href: "/dashboard", label: "Dashboard", icon: "castle" },
+  { href: "/child-progress", label: "Học sinh", icon: "users" },
+  { href: "/roadmap", label: "Lộ trình", icon: "map" },
+  { href: "/log", label: "Log", icon: "edit" },
+  { href: "/coach", label: "Coach", icon: "bot" },
+  { href: "/family", label: "Nhóm", icon: "users" },
+  { href: "/profile", label: "Profile", icon: "profile" },
 ];
 
 function NavIcon({ name, className }: { name: string; className?: string }) {
@@ -119,7 +112,7 @@ function NavIcon({ name, className }: { name: string; className?: string }) {
   return icons[name] ?? null;
 }
 
-export function Sidebar({ user, pendingRequests = 0 }: { user: User; pendingRequests?: number }) {
+export function Sidebar({ user }: { user: User }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -175,11 +168,6 @@ export function Sidebar({ user, pendingRequests = 0 }: { user: User; pendingRequ
                     <NavIcon name={item.icon} />
                   </span>
                   {item.label}
-                  {item.href === "/requests" && pendingRequests > 0 && (
-                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
-                      {pendingRequests}
-                    </span>
-                  )}
                 </Link>
               );
             })}
@@ -244,35 +232,23 @@ export function Sidebar({ user, pendingRequests = 0 }: { user: User; pendingRequ
         </div>
 
         <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
-          {nav.map((item, i) => {
+          {nav.map((item) => {
             const active = pathname === item.href;
-            const prevGroup = i > 0 ? (nav[i - 1] as any).group : undefined;
-            const curGroup = (item as any).group;
-            const showDivider = isMentor && curGroup && prevGroup && curGroup !== prevGroup;
             return (
-              <div key={item.href}>
-                {showDivider && (
-                  <div className="mx-1 my-1.5 border-t border-white/5" />
-                )}
-                <Link
-                  href={item.href}
-                  className={`flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-all duration-150 ${
-                    active
-                      ? "bg-gradient-to-r from-indigo-600/90 to-indigo-500/80 text-white shadow-lg shadow-indigo-500/20"
-                      : "text-slate-400 hover:bg-white/5 hover:text-white"
-                  }`}
-                >
-                  <span className={active ? "text-indigo-200" : "text-slate-500"}>
-                    <NavIcon name={item.icon} />
-                  </span>
-                  {item.label}
-                  {item.href === "/requests" && pendingRequests > 0 && (
-                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
-                      {pendingRequests}
-                    </span>
-                  )}
-                </Link>
-              </div>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-all duration-150 ${
+                  active
+                    ? "bg-gradient-to-r from-indigo-600/90 to-indigo-500/80 text-white shadow-lg shadow-indigo-500/20"
+                    : "text-slate-400 hover:bg-white/5 hover:text-white"
+                }`}
+              >
+                <span className={active ? "text-indigo-200" : "text-slate-500"}>
+                  <NavIcon name={item.icon} />
+                </span>
+                {item.label}
+              </Link>
             );
           })}
         </nav>
